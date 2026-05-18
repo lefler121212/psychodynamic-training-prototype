@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psychodynamic Psychotherapy — Clinical Training Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0e8;
+    --cream: #ede8dc;
+    --muted: #7a7167;
+    --accent: #8b3a2a;
+    --accent-soft: #c4795e;
+    --gold: #b8963e;
+    --correct: #2d5a3d;
+    --correct-bg: #e8f2ec;
+    --wrong: #7a2020;
+    --wrong-bg: #f5e8e8;
+    --partial: #5a4a1a;
+    --partial-bg: #f5f0d8;
+    --border: #c8c0b0;
+    --shadow: rgba(26,23,20,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Subtle grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    padding: 52px 0 36px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 5vw, 48px);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--cream);
+    border-radius: 2px;
+    margin-top: 28px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Session nav tabs */
+  .session-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 36px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .session-tab {
+    padding: 12px 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .session-tab:hover { color: var(--ink); }
+
+  .session-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* Session section */
+  .session-section { display: none; }
+  .session-section.active { display: block; }
+
+  .session-header {
+    margin-bottom: 32px;
+  }
+
+  .session-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .session-intro {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* Vignette card */
+  .vignette-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vignette-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+  }
+
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 10px;
+  }
+
+  .vignette-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink);
+    font-weight: 300;
+  }
+
+  .vignette-text strong {
+    font-weight: 600;
+  }
+
+  /* Scenario / question block */
+  .scenario-block {
+    margin-bottom: 40px;
+  }
+
+  .scenario-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .question-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  .question-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .question-inner {
+    flex: 1;
+  }
+
+  /* Answer options */
+  .options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.18s;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent-soft);
+    background: var(--cream);
+    transform: translateX(2px);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .option-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    min-width: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    transition: color 0.18s;
+  }
+
+  .option-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .option-btn.selected-correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+  }
+
+  .option-btn.selected-correct .option-letter { color: var(--correct); }
+
+  .option-btn.selected-wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+  }
+
+  .option-btn.selected-wrong .option-letter { color: var(--wrong); }
+
+  .option-btn.revealed-correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    opacity: 0.7;
+  }
+
+  .option-btn.revealed-correct .option-letter { color: var(--correct); }
+
+  /* Feedback panel */
+  .feedback-panel {
+    margin-top: 16px;
+    padding: 18px 22px;
+    border-radius: 2px;
+    border-left: 3px solid;
+    font-size: 14px;
+    line-height: 1.7;
+    display: none;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .feedback-panel.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+    display: block;
+  }
+
+  .feedback-panel.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+    color: var(--wrong);
+    display: block;
+  }
+
+  .feedback-panel.partial {
+    background: var(--partial-bg);
+    border-color: var(--gold);
+    color: var(--partial);
+    display: block;
+  }
+
+  .feedback-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+
+  .feedback-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  /* Reflection prompt */
+  .reflection-block {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 28px 32px;
+    margin-top: 40px;
+  }
+
+  .reflection-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .reflection-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .reflection-questions {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .reflection-questions li {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink);
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .reflection-questions li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* Score summary */
+  .score-summary {
+    display: none;
+    background: white;
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    border-radius: 2px;
+    margin-top: 36px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .score-summary.visible { display: block; animation: slideDown 0.4s ease; }
+
+  .score-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .score-message {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+  }
+
+  /* Reset button */
+  .reset-btn {
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* Separator rule */
+  .ornament {
+    text-align: center;
+    color: var(--border);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    margin: 32px 0;
+    letter-spacing: 0.3em;
+  }
+
+  @media (max-width: 600px) {
+    .vignette-card { padding: 20px 20px; }
+    .session-tab { padding: 10px 16px; font-size: 10px; }
+    .wrap { padding: 0 16px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Psychodynamic Psychotherapy · 15-Session Training Module</div>
+    <h1>Clinical Vignette <em>Training</em></h1>
+    <p class="subtitle">Interactive scenarios for practising core psychodynamic techniques. Read each clinical vignette and select the most appropriate therapist response.</p>
+    <div class="progress-bar"><div class="progress-fill" id="globalProgress" style="width:0%"></div></div>
+    <div class="progress-label" id="globalProgressLabel">0 of 6 questions answered</div>
+  </header>
+
+  <!-- Session tabs -->
+  <div class="session-nav">
+    <button class="session-tab active" onclick="switchSession(1)">Session 01 — Setting the Frame</button>
+    <button class="session-tab" onclick="switchSession(2)">Session 02 — Free Association</button>
+  </div>
+
+  <!-- ===================== SESSION 01 ===================== -->
+  <div class="session-section active" id="session-1">
+
+    <div class="session-header">
+      <div class="session-number">Session 01</div>
+      <h2>Setting the Frame &amp; the Therapeutic Relationship</h2>
+      <p class="session-intro">A 34-year-old engineer in his second session of therapy arrives five minutes late and almost immediately asks whether you have children and how long you have been practising. Your task is to hold the frame while remaining curious and warm.</p>
+    </div>
+
+    <div class="vignette-card">
+      <div class="card-label">Clinical Vignette</div>
+      <p class="vignette-text">Marcus, 34, an engineer, arrives five minutes late to his second session. He drops his bag, scans the room quickly, and within minutes says: <strong>"Do you have kids? And how long have you been doing this?"</strong> He makes the questions sound casual, almost offhand — but his eyes watch you carefully for your reaction.</p>
+    </div>
+
+    <!-- Q1 -->
+    <div class="scenario-block" id="s1q1">
+      <div class="scenario-label">Question 1 of 3</div>
+      <div class="question-text">
+        <span class="question-number">1</span>
+        <span class="question-inner">Marcus asks whether you have children. Which response best holds the frame while remaining warm?</span>
+      </div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="answer('s1q1','A','wrong')">
+          <span class="option-letter">A</span>
+          <span class="option-text">"I do have children, yes — two. Why do you ask?"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q1','B','wrong')">
+          <span class="option-letter">B</span>
+          <span class="option-text">"That's something I don't discuss. Let's focus on you."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q1','C','correct')">
+          <span class="option-letter">C</span>
+          <span class="option-text">"I notice you're curious about me — I wonder what it would mean to you, one way or the other."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q1','D','wrong')">
+          <span class="option-letter">D</span>
+          <span class="option-text">"I don't answer personal questions in therapy. It's part of how this works."</span>
+        </button>
+      </div>
+      <div class="feedback-panel" id="s1q1-feedback"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Q2 -->
+    <div class="scenario-block" id="s1q2">
+      <div class="scenario-label">Question 2 of 3</div>
+      <div class="question-text">
+        <span class="question-number">2</span>
+        <span class="question-inner">You gently decline to answer and Marcus becomes briefly irritated: <em>"It's just a question — I'm not asking anything weird."</em> What is the most therapeutically useful response?</span>
+      </div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="answer('s1q2','A','wrong')">
+          <span class="option-letter">A</span>
+          <span class="option-text">"You're right, it was a perfectly reasonable thing to ask. I apologise for making it awkward."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q2','B','correct')">
+          <span class="option-letter">B</span>
+          <span class="option-text">"The irritation makes sense. I didn't answer straightforwardly, and that can feel dismissive. I'm more interested in what's underneath the question than in keeping you at arm's length."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q2','C','wrong')">
+          <span class="option-letter">C</span>
+          <span class="option-text">"You seem angry. Can we explore that anger?"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q2','D','partial')">
+          <span class="option-letter">D</span>
+          <span class="option-text">"It's not weird at all. I just think those questions often carry something more — would you be curious about that?"</span>
+        </button>
+      </div>
+      <div class="feedback-panel" id="s1q2-feedback"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Q3 -->
+    <div class="scenario-block" id="s1q3">
+      <div class="scenario-label">Question 3 of 3</div>
+      <div class="question-text">
+        <span class="question-number">3</span>
+        <span class="question-inner">Marcus settles slightly and says: <em>"I guess I like to know who I'm dealing with."</em> Which response best uses this opening?</span>
+      </div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="answer('s1q3','A','correct')">
+          <span class="option-letter">A</span>
+          <span class="option-text">"That makes a lot of sense. I wonder if that's something you find yourself doing in other situations too — needing to size things up before you can settle in."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q3','B','wrong')">
+          <span class="option-letter">B</span>
+          <span class="option-text">"Completely understandable. Here are a few things about me that might help you feel more comfortable…"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q3','C','wrong')">
+          <span class="option-letter">C</span>
+          <span class="option-text">"I think that may be related to what you said last week about trusting people."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s1q3','D','partial')">
+          <span class="option-letter">D</span>
+          <span class="option-text">"What would it mean to you to feel like you knew who you were dealing with?"</span>
+        </button>
+      </div>
+      <div class="feedback-panel" id="s1q3-feedback"></div>
+    </div>
+
+    <div class="score-summary" id="score-s1">
+      <div class="score-number" id="score-s1-num">–</div>
+      <div class="score-label">Session 01 Score</div>
+      <div class="score-message" id="score-s1-msg"></div>
+      <button class="reset-btn" onclick="resetSession(1)">Restart Session 01</button>
+    </div>
+
+    <div class="reflection-block">
+      <div class="reflection-label">Facilitator Debrief</div>
+      <div class="reflection-title">Questions for Discussion</div>
+      <ul class="reflection-questions">
+        <li>What did the therapist do that held the frame? What language was used?</li>
+        <li>Where did warmth and the frame come into tension? How was it navigated?</li>
+        <li>What might the patient's personal questions be communicating beyond their surface content?</li>
+        <li>What would you do differently next time?</li>
+      </ul>
+    </div>
+
+  </div><!-- /session-1 -->
+
+
+  <!-- ===================== SESSION 02 ===================== -->
+  <div class="session-section" id="session-2">
+
+    <div class="session-header">
+      <div class="session-number">Session 02</div>
+      <h2>Free Association &amp; Listening</h2>
+      <p class="session-intro">A 28-year-old graduate student, articulate but self-editing, is invited to free-associate in her fourth session. Your task is to follow the drift of her associations without summarising or redirecting — and to tolerate silence.</p>
+    </div>
+
+    <div class="vignette-card">
+      <div class="card-label">Clinical Vignette</div>
+      <p class="vignette-text">Priya, 28, a graduate student, settles into her chair. You invite her to say what comes to mind without editing herself. She begins: <strong>"A novel I'm reading — it's about a woman who disappears — my mother used to disappear when she was angry, not literally, she'd just go somewhere else — actually this room is colder than last week, isn't it—"</strong> She stops abruptly and looks at you. "Sorry, this is probably all over the place."</p>
+    </div>
+
+    <!-- Q4 -->
+    <div class="scenario-block" id="s2q1">
+      <div class="scenario-label">Question 1 of 3</div>
+      <div class="question-text">
+        <span class="question-number">4</span>
+        <span class="question-inner">Priya has just offered a chain of associations — novel, disappearing woman, her mother, the room's temperature — and then apologised. What is the best response?</span>
+      </div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="answer('s2q1','A','wrong')">
+          <span class="option-letter">A</span>
+          <span class="option-text">"Don't worry — so it sounds like your relationship with your mother may be important. Can you tell me more about that?"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q1','B','wrong')">
+          <span class="option-letter">B</span>
+          <span class="option-text">"I notice you moved from the novel, to your mother, to the room — I wonder what connects those things for you."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q1','C','correct')">
+          <span class="option-letter">C</span>
+          <span class="option-text">"It isn't all over the place at all. That's exactly it — just stay with wherever you are."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q1','D','wrong')">
+          <span class="option-letter">D</span>
+          <span class="option-text">"You mentioned your mother going somewhere else when she was angry. What was that like for you?"</span>
+        </button>
+      </div>
+      <div class="feedback-panel" id="s2q1-feedback"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Q5 -->
+    <div class="scenario-block" id="s2q2">
+      <div class="scenario-label">Question 2 of 3</div>
+      <div class="question-text">
+        <span class="question-number">5</span>
+        <span class="question-inner">Priya continues associating, then hits a sudden silence and says: <em>"Actually — I think I wanted to talk about my dissertation instead."</em> How do you respond?</span>
+      </div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="answer('s2q2','A','wrong')">
+          <span class="option-letter">A</span>
+          <span class="option-text">"Of course — what's happening with the dissertation?"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q2','B','partial')">
+          <span class="option-letter">B</span>
+          <span class="option-text">"I'm happy to go there — though I noticed the shift. Something came up and then you moved away from it."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q2','C','correct')">
+          <span class="option-letter">C</span>
+          <span class="option-text"><em>(Pause, sit with the silence a moment.)</em> "I noticed you stopped. Stay here for a moment — what just came up?"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q2','D','wrong')">
+          <span class="option-letter">D</span>
+          <span class="option-text">"I think you're avoiding something. The dissertation can wait."</span>
+        </button>
+      </div>
+      <div class="feedback-panel" id="s2q2-feedback"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Q6 -->
+    <div class="scenario-block" id="s2q3">
+      <div class="scenario-label">Question 3 of 3</div>
+      <div class="question-text">
+        <span class="question-number">6</span>
+        <span class="question-inner">Priya sits quietly for almost a full minute and then says: <em>"I keep thinking about whether my mother knows I'm in therapy."</em> What do you do?</span>
+      </div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="answer('s2q3','A','wrong')">
+          <span class="option-letter">A</span>
+          <span class="option-text">"Does she? Have you told her?"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q3','B','wrong')">
+          <span class="option-letter">B</span>
+          <span class="option-text">"That feels like it connects to what you said earlier — your mother going somewhere else. There seems to be a theme about knowing and not knowing."</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q3','C','correct')">
+          <span class="option-letter">C</span>
+          <span class="option-text"><em>(Quietly.)</em> "What's the thought like — imagining her knowing?"</span>
+        </button>
+        <button class="option-btn" onclick="answer('s2q3','D','partial')">
+          <span class="option-letter">D</span>
+          <span class="option-text">"Say more about that."</span>
+        </button>
+      </div>
+      <div class="feedback-panel" id="s2q3-feedback"></div>
+    </div>
+
+    <div class="score-summary" id="score-s2">
+      <div class="score-number" id="score-s2-num">–</div>
+      <div class="score-label">Session 02 Score</div>
+      <div class="score-message" id="score-s2-msg"></div>
+      <button class="reset-btn" onclick="resetSession(2)">Restart Session 02</button>
+    </div>
+
+    <div class="reflection-block">
+      <div class="reflection-label">Facilitator Debrief</div>
+      <div class="reflection-title">Questions for Discussion</div>
+      <ul class="reflection-questions">
+        <li>Where did the resident's listening allow the patient to deepen?</li>
+        <li>Where did intervention close the associative process down?</li>
+        <li>What was the patient moving toward? What was being defended against?</li>
+        <li>How did the resident handle silence and the topic-change?</li>
+      </ul>
+    </div>
+
+  </div><!-- /session-2 -->
+
+</div><!-- /wrap -->
+
+<script>
+  // State tracking
+  const state = {
+    s1q1: null, s1q2: null, s1q3: null,
+    s2q1: null, s2q2: null, s2q3: null,
+  };
+
+  const feedback = {
+    s1q1: {
+      correct: { label: 'Best Response', text: 'This response holds the frame beautifully: it neither answers the question nor refuses it harshly. By reflecting curiosity back to the patient, it keeps the door open — the question becomes material rather than an obstacle. Warmth and frame coexist.' },
+      wrong_A: { label: 'Not Recommended', text: 'Answering the personal question satisfies Marcus\'s surface request but forfeits the frame entirely. With a patient who manages anxiety through control, compliance like this may actually increase his anxiety — and closes off the richer question of what he was really asking.' },
+      wrong_B: { label: 'Too Abrupt', text: '"Let\'s focus on you" is technically correct in intent but brittle in delivery. The phrase can land as dismissive or scripted, damaging rapport in an early session. The frame can be held with far more warmth than this.' },
+      wrong_D: { label: 'Too Rigid', text: 'Citing rules distances you from the patient and can feel bureaucratic rather than therapeutic. The frame is best held through relational warmth, not policy statements.' },
+    },
+    s1q2: {
+      correct: { label: 'Best Response', text: 'This response does three things at once: it acknowledges his irritation as legitimate, it takes mild ownership of the awkwardness without capitulating, and it invites him gently into the deeper material. Warmth and curiosity are in balance.' },
+      wrong_A: { label: 'Over-Apologetic', text: 'Apologising for holding the frame undermines it. It also misreads his irritation: he doesn\'t need your apology, he needs to know you can hold your ground without becoming cold. Capitulation often increases a controlling patient\'s anxiety.' },
+      wrong_C: { label: 'Too Direct', text: 'Naming the anger in this moment is premature and a little clinical. It can feel like being diagnosed rather than being in conversation. The irritation has not fully formed — better to create space for it than to label it.' },
+      partial: { label: 'Reasonable, But…', text: 'This is a decent option. It acknowledges the question may carry more and invites curiosity. However it skips over the irritation entirely, and that missed moment may subtly communicate that his uncomfortable feelings aren\'t welcome.' },
+    },
+    s1q3: {
+      correct: { label: 'Best Response', text: 'This response takes his own words — "I like to know who I\'m dealing with" — and follows them into his wider relational world. It\'s exploratory rather than interpretive, linking without prescribing. Delivered warmly, it opens the session into genuine work.' },
+      wrong_B: { label: 'Breaks the Frame', text: 'Sharing personal information at this point may feel generous, but it actually forecloses the therapeutic process. You\'d be solving the surface problem rather than exploring what\'s beneath it.' },
+      wrong_C: { label: 'Premature', text: 'Reaching back to last week\'s content — with only the second session underway — can feel like a move to display competence rather than genuine curiosity. It\'s also likely too much to hold for a patient who is still assessing whether you\'re safe.' },
+      partial: { label: 'Good, Not Quite Best', text: 'Asking what it would mean to "feel like you knew who you were dealing with" is genuinely curious and open. It\'s slightly more abstract than Option A, which uses his own words and opens naturally into a relational pattern.' },
+    },
+    s2q1: {
+      correct: { label: 'Best Response', text: 'Reassuring Priya that free association is working — without redirecting her — keeps the process alive. "Just stay with wherever you are" is a simple, warm instruction that continues the invitation rather than interrupting it. The apology is heard and gently set aside.' },
+      wrong_A: { label: 'Redirects the Process', text: '"Can you tell me more about that?" redirects to a specific topic (the mother relationship) and effectively ends the free association. It also names a theme before the patient has arrived there herself, which can feel like being led.' },
+      wrong_B: { label: 'Interprets Too Soon', text: 'Naming the connections between novel, mother, and room is intellectually interesting — but it\'s an interpretation offered before the patient has had a chance to feel her own way there. Premature synthesis often causes patients to comply rather than deepen.' },
+      wrong_D: { label: 'Skips the Process', text: 'Asking about the mother\'s anger picks up one thread and follows it — which can be useful later — but at this moment it shuts down the associative process and turns the session into a more conventional, directed interview.' },
+    },
+    s2q2: {
+      correct: { label: 'Best Response', text: 'Tolerating the silence and gently returning Priya to what just happened — before the topic-change — keeps the associative process active. The question "what just came up?" is simple, open, and doesn\'t pre-load an answer. Silence is treated as data, not awkwardness to be filled.' },
+      wrong_A: { label: 'Follows the Avoidance', text: 'Accepting the topic-change without comment misses a significant moment. Priya has just moved away from something — possibly something close to the surface — and following her creates collusion with the avoidance.' },
+      partial: { label: 'Good, But…', text: 'Naming the shift is more active and useful than following the topic-change. The hesitation in the first clause ("I\'m happy to go there") slightly undercuts the observation. The best response acts on the silence before verbally naming the shift.' },
+      wrong_D: { label: 'Too Confrontational', text: '"You\'re avoiding something" is a confrontation that names resistance before the alliance is ready to hold it. Delivered this directly, it can feel like an accusation, and the patient is likely to defend rather than explore.' },
+    },
+    s2q3: {
+      correct: { label: 'Best Response', text: 'Following the association into the patient\'s felt experience — "what\'s the thought like" — continues the free-associative process without directing it. The single word "quietly" is important: the tone matches the fragility of the moment that just arrived out of a minute of silence.' },
+      wrong_A: { label: 'Literal', text: 'Asking whether she\'s told her mother is a factual question that pulls the conversation out of the internal world and into the external one. It follows the surface content rather than the affect underneath it.' },
+      wrong_B: { label: 'Premature Synthesis', text: 'Connecting the "knowing and not knowing" theme is genuinely astute — but offered at this point it can land as the therapist showing their work rather than accompanying the patient. Let the patient arrive at the pattern first.' },
+      partial: { label: 'Acceptable', text: '"Say more about that" is a useful, unobtrusive prompt that doesn\'t redirect. It\'s a safe fallback. Option C is preferable because it follows the patient\'s experience more specifically — "what\'s the thought like" — rather than simply asking her to continue.' },
+    },
+  };
+
+  function answer(qid, letter, type) {
+    if (state[qid] !== null) return; // already answered
+    state[qid] = type;
+
+    const block = document.getElementById(qid);
+    const btns = block.querySelectorAll('.option-btn');
+    const panel = document.getElementById(qid + '-feedback');
+    const fb = feedback[qid];
+
+    btns.forEach(btn => {
+      btn.disabled = true;
+      const l = btn.querySelector('.option-letter').textContent.trim();
+      if (l === letter) {
+        if (type === 'correct') btn.classList.add('selected-correct');
+        else if (type === 'wrong') btn.classList.add('selected-wrong');
+        else if (type === 'partial') btn.classList.add('selected-wrong');
+      }
+      // Reveal correct if wrong/partial was chosen
+      if (type !== 'correct') {
+        // find correct
+        const optMap = getOptionMap(qid);
+        if (optMap[l] !== 'correct') {
+          // find the correct one
+          Object.entries(optMap).forEach(([ol, ot]) => {
+            if (ot === 'correct') {
+              block.querySelectorAll('.option-btn').forEach(b => {
+                if (b.querySelector('.option-letter').textContent.trim() === ol) {
+                  b.classList.add('revealed-correct');
+                }
+              });
+            }
+          });
+        }
+      }
+    });
+
+    // Show feedback
+    let fbData;
+    if (type === 'correct') fbData = fb.correct;
+    else if (type === 'partial') fbData = fb.partial;
+    else fbData = fb['wrong_' + letter] || fb['wrong_A'] || fb.correct;
+
+    const cls = type === 'correct' ? 'correct' : (type === 'partial' ? 'partial' : 'wrong');
+    panel.className = 'feedback-panel ' + cls;
+    panel.innerHTML = `<div class="feedback-icon">${fbData.label}</div><div class="feedback-text">${fbData.text}</div>`;
+
+    updateProgress();
+    checkSessionComplete(qid.startsWith('s1') ? 1 : 2);
+  }
+
+  function getOptionMap(qid) {
+    // reconstruct from feedback keys
+    const fb = feedback[qid];
+    const map = {};
+    // correct
+    // we need to look at the HTML buttons to map letters to types
+    // Instead let's store the map inline:
+    const maps = {
+      s1q1: { A:'wrong', B:'wrong', C:'correct', D:'wrong' },
+      s1q2: { A:'wrong', B:'correct', C:'wrong', D:'partial' },
+      s1q3: { A:'correct', B:'wrong', C:'wrong', D:'partial' },
+      s2q1: { A:'wrong', B:'wrong', C:'correct', D:'wrong' },
+      s2q2: { A:'wrong', B:'partial', C:'correct', D:'wrong' },
+      s2q3: { A:'wrong', B:'wrong', C:'correct', D:'partial' },
+    };
+    return maps[qid] || {};
+  }
+
+  function updateProgress() {
+    const total = Object.keys(state).length;
+    const answered = Object.values(state).filter(v => v !== null).length;
+    const pct = (answered / total) * 100;
+    document.getElementById('globalProgress').style.width = pct + '%';
+    document.getElementById('globalProgressLabel').textContent = `${answered} of ${total} questions answered`;
+  }
+
+  function checkSessionComplete(n) {
+    const prefix = 's' + n;
+    const keys = Object.keys(state).filter(k => k.startsWith(prefix));
+    const done = keys.every(k => state[k] !== null);
+    if (!done) return;
+
+    const correct = keys.filter(k => state[k] === 'correct').length;
+    const partial = keys.filter(k => state[k] === 'partial').length;
+    const total = keys.length;
+    const score = Math.round(((correct + partial * 0.5) / total) * 100);
+
+    const scoreEl = document.getElementById('score-s' + n);
+    const numEl = document.getElementById('score-s' + n + '-num');
+    const msgEl = document.getElementById('score-s' + n + '-msg');
+
+    numEl.textContent = score + '%';
+    let msg;
+    if (score === 100) msg = 'Excellent technique — you held the frame, tolerated uncertainty, and followed the patient\'s lead throughout. Revisit the facilitator questions to deepen the learning.';
+    else if (score >= 67) msg = 'Good clinical instincts. Review the questions where you chose a partial or incorrect response — those moments often contain the most to learn.';
+    else if (score >= 34) msg = 'Some strong moments alongside areas for development. The feedback for each question can help you articulate what the better responses are doing differently.';
+    else msg = 'This material takes time and repetition to internalise. Read through the feedback carefully and consider what assumptions guided your choices.';
+
+    msgEl.textContent = msg;
+    scoreEl.classList.add('visible');
+  }
+
+  function switchSession(n) {
+    document.querySelectorAll('.session-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.session-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('session-' + n).classList.add('active');
+    document.querySelectorAll('.session-tab')[n - 1].classList.add('active');
+  }
+
+  function resetSession(n) {
+    const prefix = 's' + n;
+    const keys = Object.keys(state).filter(k => k.startsWith(prefix));
+    keys.forEach(k => { state[k] = null; });
+
+    // Reset UI
+    document.getElementById('session-' + n).querySelectorAll('.option-btn').forEach(btn => {
+      btn.disabled = false;
+      btn.classList.remove('selected-correct', 'selected-wrong', 'revealed-correct');
+    });
+    document.getElementById('session-' + n).querySelectorAll('.feedback-panel').forEach(p => {
+      p.className = 'feedback-panel';
+      p.innerHTML = '';
+    });
+    document.getElementById('score-s' + n).classList.remove('visible');
+
+    updateProgress();
+  }
+</script>
+</body>
+</html>
