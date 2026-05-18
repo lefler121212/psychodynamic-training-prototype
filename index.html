@@ -6,957 +6,1172 @@
 <title>Psychodynamic Psychotherapy — Clinical Training Module</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1714;
-    --paper: #f5f0e8;
-    --cream: #ede8dc;
-    --muted: #7a7167;
-    --accent: #8b3a2a;
-    --accent-soft: #c4795e;
-    --gold: #b8963e;
-    --correct: #2d5a3d;
-    --correct-bg: #e8f2ec;
-    --wrong: #7a2020;
-    --wrong-bg: #f5e8e8;
-    --partial: #5a4a1a;
-    --partial-bg: #f5f0d8;
-    --border: #c8c0b0;
-    --shadow: rgba(26,23,20,0.12);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Instrument Sans', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    min-height: 100vh;
-    position: relative;
-  }
-
-  /* Subtle grain texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
-
-  /* Header */
-  header {
-    padding: 52px 0 36px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 48px;
-  }
-
-  .eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-
-  h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(30px, 5vw, 48px);
-    font-weight: 300;
-    line-height: 1.15;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-    margin-bottom: 12px;
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .subtitle {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 520px;
-  }
-
-  /* Progress bar */
-  .progress-bar {
-    width: 100%;
-    height: 3px;
-    background: var(--cream);
-    border-radius: 2px;
-    margin-top: 28px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--gold));
-    border-radius: 2px;
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .progress-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 6px;
-    letter-spacing: 0.08em;
-  }
-
-  /* Session nav tabs */
-  .session-nav {
-    display: flex;
-    gap: 0;
-    margin-bottom: 36px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .session-tab {
-    padding: 12px 28px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.2s;
-    background: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-  }
-
-  .session-tab:hover { color: var(--ink); }
-
-  .session-tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  /* Session section */
-  .session-section { display: none; }
-  .session-section.active { display: block; }
-
-  .session-header {
-    margin-bottom: 32px;
-  }
-
-  .session-number {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 8px;
-  }
-
-  h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 3.5vw, 32px);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    margin-bottom: 8px;
-  }
-
-  .session-intro {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.7;
-    max-width: 600px;
-  }
-
-  /* Vignette card */
-  .vignette-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 28px 32px;
-    margin-bottom: 32px;
-    box-shadow: 0 2px 8px var(--shadow);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .vignette-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: var(--accent);
-  }
-
-  .card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent-soft);
-    margin-bottom: 10px;
-  }
-
-  .vignette-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 17px;
-    line-height: 1.75;
-    color: var(--ink);
-    font-weight: 300;
-  }
-
-  .vignette-text strong {
-    font-weight: 600;
-  }
-
-  /* Scenario / question block */
-  .scenario-block {
-    margin-bottom: 40px;
-  }
-
-  .scenario-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
-  .question-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--cream);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-right: 10px;
-    flex-shrink: 0;
-  }
-
-  .question-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--ink);
-    margin-bottom: 18px;
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-  }
-
-  .question-inner {
-    flex: 1;
-  }
-
-  /* Answer options */
-  .options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .option-btn {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 18px;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.18s;
-    font-family: inherit;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .option-btn:hover:not(:disabled) {
-    border-color: var(--accent-soft);
-    background: var(--cream);
-    transform: translateX(2px);
-  }
-
-  .option-btn:disabled { cursor: default; }
-
-  .option-letter {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    min-width: 20px;
-    margin-top: 2px;
-    flex-shrink: 0;
-    transition: color 0.18s;
-  }
-
-  .option-text {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--ink);
-  }
-
-  .option-btn.selected-correct {
-    background: var(--correct-bg);
-    border-color: var(--correct);
-  }
-
-  .option-btn.selected-correct .option-letter { color: var(--correct); }
-
-  .option-btn.selected-wrong {
-    background: var(--wrong-bg);
-    border-color: var(--wrong);
-  }
-
-  .option-btn.selected-wrong .option-letter { color: var(--wrong); }
-
-  .option-btn.revealed-correct {
-    background: var(--correct-bg);
-    border-color: var(--correct);
-    opacity: 0.7;
-  }
-
-  .option-btn.revealed-correct .option-letter { color: var(--correct); }
-
-  /* Feedback panel */
-  .feedback-panel {
-    margin-top: 16px;
-    padding: 18px 22px;
-    border-radius: 2px;
-    border-left: 3px solid;
-    font-size: 14px;
-    line-height: 1.7;
-    display: none;
-    animation: slideDown 0.3s ease;
-  }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .feedback-panel.correct {
-    background: var(--correct-bg);
-    border-color: var(--correct);
-    color: var(--correct);
-    display: block;
-  }
-
-  .feedback-panel.wrong {
-    background: var(--wrong-bg);
-    border-color: var(--wrong);
-    color: var(--wrong);
-    display: block;
-  }
-
-  .feedback-panel.partial {
-    background: var(--partial-bg);
-    border-color: var(--gold);
-    color: var(--partial);
-    display: block;
-  }
-
-  .feedback-icon {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    opacity: 0.7;
-  }
-
-  .feedback-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    line-height: 1.65;
-  }
-
-  /* Divider */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 36px 0;
-  }
-
-  /* Reflection prompt */
-  .reflection-block {
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 28px 32px;
-    margin-top: 40px;
-  }
-
-  .reflection-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-
-  .reflection-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--ink);
-    margin-bottom: 16px;
-  }
-
-  .reflection-questions {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .reflection-questions li {
-    font-size: 14px;
-    line-height: 1.65;
-    color: var(--ink);
-    padding-left: 18px;
-    position: relative;
-  }
-
-  .reflection-questions li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--muted);
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  /* Score summary */
-  .score-summary {
-    display: none;
-    background: white;
-    border: 1px solid var(--border);
-    padding: 28px 32px;
-    border-radius: 2px;
-    margin-top: 36px;
-    box-shadow: 0 2px 8px var(--shadow);
-  }
-
-  .score-summary.visible { display: block; animation: slideDown 0.4s ease; }
-
-  .score-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 52px;
-    font-weight: 300;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .score-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-  }
-
-  .score-message {
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--ink);
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 17px;
-  }
-
-  /* Reset button */
-  .reset-btn {
-    margin-top: 20px;
-    padding: 10px 24px;
-    background: none;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 1px;
-    transition: all 0.2s;
-  }
-
-  .reset-btn:hover {
-    background: var(--accent);
-    color: white;
-  }
-
-  /* Separator rule */
-  .ornament {
-    text-align: center;
-    color: var(--border);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    margin: 32px 0;
-    letter-spacing: 0.3em;
-  }
-
-  @media (max-width: 600px) {
-    .vignette-card { padding: 20px 20px; }
-    .session-tab { padding: 10px 16px; font-size: 10px; }
-    .wrap { padding: 0 16px 60px; }
-  }
+:root {
+  --ink: #1a1714;
+  --paper: #f5f0e8;
+  --cream: #ede8dc;
+  --muted: #7a7167;
+  --accent: #8b3a2a;
+  --accent-soft: #c4795e;
+  --gold: #b8963e;
+  --correct: #2d5a3d;
+  --correct-bg: #e8f2ec;
+  --wrong: #7a2020;
+  --wrong-bg: #f5e8e8;
+  --partial: #5a4a1a;
+  --partial-bg: #f5f0d8;
+  --border: #c8c0b0;
+  --shadow: rgba(26,23,20,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Instrument Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 24px 80px;}
+
+header{padding:52px 0 36px;border-bottom:1px solid var(--border);margin-bottom:32px;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,46px);font-weight:300;line-height:1.15;color:var(--ink);letter-spacing:-.01em;margin-bottom:10px;}
+h1 em{font-style:italic;color:var(--accent);}
+.subtitle{font-size:14px;color:var(--muted);line-height:1.6;max-width:560px;}
+.progress-bar{width:100%;height:3px;background:var(--cream);border-radius:2px;margin-top:28px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.08em;}
+
+/* Two-column layout */
+.layout{display:flex;gap:0;align-items:flex-start;}
+.sidebar{width:220px;flex-shrink:0;position:sticky;top:24px;padding-top:8px;}
+.sidebar-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0 12px;}
+.nav-list{list-style:none;}
+.nav-item button{display:block;width:100%;text-align:left;padding:8px 12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em;color:var(--muted);background:none;border:none;cursor:pointer;border-left:2px solid transparent;transition:all .15s;line-height:1.4;}
+.nav-item button:hover{color:var(--ink);background:var(--cream);}
+.nav-item button.active{color:var(--accent);border-left-color:var(--accent);background:rgba(139,58,42,.06);}
+.nav-item button.completed{color:var(--correct);}
+.nav-item button.completed.active{color:var(--accent);}
+.nav-num{display:inline-block;width:24px;font-size:9px;opacity:.6;}
+
+.main{flex:1;min-width:0;padding-left:36px;border-left:1px solid var(--border);}
+
+/* Session panel */
+.session-panel{display:none;}
+.session-panel.active{display:block;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+.session-header{margin-bottom:28px;}
+.session-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3.5vw,30px);font-weight:400;letter-spacing:-.01em;margin-bottom:6px;}
+.session-intro{font-size:13.5px;color:var(--muted);line-height:1.7;max-width:580px;}
+
+.vignette-card{background:white;border:1px solid var(--border);border-radius:2px;padding:24px 28px;margin-bottom:28px;box-shadow:0 2px 6px var(--shadow);position:relative;overflow:hidden;}
+.vignette-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);}
+.card-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-soft);margin-bottom:8px;}
+.vignette-text{font-family:'Cormorant Garamond',serif;font-size:16px;line-height:1.75;color:var(--ink);font-weight:300;}
+.vignette-text strong{font-weight:600;}
+
+.qblock{margin-bottom:32px;}
+.qlabel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.qtext{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;line-height:1.5;color:var(--ink);margin-bottom:14px;display:flex;gap:10px;}
+.qnum{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--cream);font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;margin-top:3px;}
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:white;border:1px solid var(--border);border-radius:2px;cursor:pointer;text-align:left;transition:all .16s;font-family:inherit;}
+.opt:hover:not(:disabled){border-color:var(--accent-soft);background:var(--cream);transform:translateX(2px);}
+.opt:disabled{cursor:default;}
+.opt-letter{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);min-width:18px;margin-top:2px;flex-shrink:0;transition:color .16s;}
+.opt-text{font-size:13.5px;line-height:1.6;color:var(--ink);}
+.opt.sel-correct{background:var(--correct-bg);border-color:var(--correct);}
+.opt.sel-correct .opt-letter{color:var(--correct);}
+.opt.sel-wrong{background:var(--wrong-bg);border-color:var(--wrong);}
+.opt.sel-wrong .opt-letter{color:var(--wrong);}
+.opt.reveal-correct{background:var(--correct-bg);border-color:var(--correct);opacity:.7;}
+.opt.reveal-correct .opt-letter{color:var(--correct);}
+
+.feedback{margin-top:12px;padding:16px 20px;border-radius:2px;border-left:3px solid;font-size:13.5px;line-height:1.7;display:none;animation:slideDown .28s ease;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+.feedback.correct{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);display:block;}
+.feedback.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);display:block;}
+.feedback.partial{background:var(--partial-bg);border-color:var(--gold);color:var(--partial);display:block;}
+.fb-icon{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px;opacity:.7;}
+.fb-text{font-family:'Cormorant Garamond',serif;font-size:15.5px;line-height:1.65;}
+
+.divider{border:none;border-top:1px solid var(--border);margin:28px 0;}
+
+.score-box{display:none;background:white;border:1px solid var(--border);padding:24px 28px;border-radius:2px;margin-top:28px;box-shadow:0 2px 6px var(--shadow);}
+.score-box.visible{display:block;animation:slideDown .4s ease;}
+.score-big{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--accent);line-height:1;}
+.score-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.score-msg{font-family:'Cormorant Garamond',serif;font-size:16px;line-height:1.65;color:var(--ink);border-top:1px solid var(--border);padding-top:14px;}
+.reset-btn{margin-top:16px;padding:8px 20px;background:none;border:1px solid var(--accent);color:var(--accent);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
+.reset-btn:hover{background:var(--accent);color:white;}
+
+.reflection{background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:24px 28px;margin-top:28px;}
+.ref-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.ref-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--ink);margin-bottom:12px;}
+.ref-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.ref-list li{font-size:13.5px;line-height:1.65;color:var(--ink);padding-left:16px;position:relative;}
+.ref-list li::before{content:'—';position:absolute;left:0;color:var(--muted);}
+
+/* mobile */
+@media(max-width:680px){
+  .layout{flex-direction:column;}
+  .sidebar{width:100%;position:static;padding-top:0;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:24px;}
+  .main{padding-left:0;border-left:none;}
+  .nav-list{display:flex;flex-wrap:wrap;gap:4px;}
+  .nav-item button{padding:6px 10px;border-left:none;border-bottom:2px solid transparent;}
+  .nav-item button.active{border-bottom-color:var(--accent);border-left:none;}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header>
-    <div class="eyebrow">Psychodynamic Psychotherapy · 15-Session Training Module</div>
-    <h1>Clinical Vignette <em>Training</em></h1>
-    <p class="subtitle">Interactive scenarios for practising core psychodynamic techniques. Read each clinical vignette and select the most appropriate therapist response.</p>
-    <div class="progress-bar"><div class="progress-fill" id="globalProgress" style="width:0%"></div></div>
-    <div class="progress-label" id="globalProgressLabel">0 of 6 questions answered</div>
-  </header>
+<header>
+  <div class="eyebrow">Psychodynamic Psychotherapy · 16-Session Training Module · PGY-3</div>
+  <h1>Clinical Vignette <em>Training</em></h1>
+  <p class="subtitle">Interactive scenarios for practising core psychodynamic techniques. Read each vignette, select the best therapist response, and review detailed clinical rationale for each choice.</p>
+  <div class="progress-bar"><div class="progress-fill" id="gProg" style="width:0%"></div></div>
+  <div class="progress-label" id="gLabel">0 of 48 questions answered</div>
+</header>
 
-  <!-- Session tabs -->
-  <div class="session-nav">
-    <button class="session-tab active" onclick="switchSession(1)">Session 01 — Setting the Frame</button>
-    <button class="session-tab" onclick="switchSession(2)">Session 02 — Free Association</button>
-  </div>
+<div class="layout">
 
-  <!-- ===================== SESSION 01 ===================== -->
-  <div class="session-section active" id="session-1">
+<!-- SIDEBAR NAV -->
+<div class="sidebar">
+  <div class="sidebar-label">Sessions</div>
+  <ul class="nav-list" id="navList">
+    <!-- generated by JS -->
+  </ul>
+</div>
 
-    <div class="session-header">
-      <div class="session-number">Session 01</div>
-      <h2>Setting the Frame &amp; the Therapeutic Relationship</h2>
-      <p class="session-intro">A 34-year-old engineer in his second session of therapy arrives five minutes late and almost immediately asks whether you have children and how long you have been practising. Your task is to hold the frame while remaining curious and warm.</p>
-    </div>
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent">
+  <!-- panels generated by JS -->
+</div>
 
-    <div class="vignette-card">
-      <div class="card-label">Clinical Vignette</div>
-      <p class="vignette-text">Marcus, 34, an engineer, arrives five minutes late to his second session. He drops his bag, scans the room quickly, and within minutes says: <strong>"Do you have kids? And how long have you been doing this?"</strong> He makes the questions sound casual, almost offhand — but his eyes watch you carefully for your reaction.</p>
-    </div>
-
-    <!-- Q1 -->
-    <div class="scenario-block" id="s1q1">
-      <div class="scenario-label">Question 1 of 3</div>
-      <div class="question-text">
-        <span class="question-number">1</span>
-        <span class="question-inner">Marcus asks whether you have children. Which response best holds the frame while remaining warm?</span>
-      </div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="answer('s1q1','A','wrong')">
-          <span class="option-letter">A</span>
-          <span class="option-text">"I do have children, yes — two. Why do you ask?"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q1','B','wrong')">
-          <span class="option-letter">B</span>
-          <span class="option-text">"That's something I don't discuss. Let's focus on you."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q1','C','correct')">
-          <span class="option-letter">C</span>
-          <span class="option-text">"I notice you're curious about me — I wonder what it would mean to you, one way or the other."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q1','D','wrong')">
-          <span class="option-letter">D</span>
-          <span class="option-text">"I don't answer personal questions in therapy. It's part of how this works."</span>
-        </button>
-      </div>
-      <div class="feedback-panel" id="s1q1-feedback"></div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Q2 -->
-    <div class="scenario-block" id="s1q2">
-      <div class="scenario-label">Question 2 of 3</div>
-      <div class="question-text">
-        <span class="question-number">2</span>
-        <span class="question-inner">You gently decline to answer and Marcus becomes briefly irritated: <em>"It's just a question — I'm not asking anything weird."</em> What is the most therapeutically useful response?</span>
-      </div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="answer('s1q2','A','wrong')">
-          <span class="option-letter">A</span>
-          <span class="option-text">"You're right, it was a perfectly reasonable thing to ask. I apologise for making it awkward."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q2','B','correct')">
-          <span class="option-letter">B</span>
-          <span class="option-text">"The irritation makes sense. I didn't answer straightforwardly, and that can feel dismissive. I'm more interested in what's underneath the question than in keeping you at arm's length."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q2','C','wrong')">
-          <span class="option-letter">C</span>
-          <span class="option-text">"You seem angry. Can we explore that anger?"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q2','D','partial')">
-          <span class="option-letter">D</span>
-          <span class="option-text">"It's not weird at all. I just think those questions often carry something more — would you be curious about that?"</span>
-        </button>
-      </div>
-      <div class="feedback-panel" id="s1q2-feedback"></div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Q3 -->
-    <div class="scenario-block" id="s1q3">
-      <div class="scenario-label">Question 3 of 3</div>
-      <div class="question-text">
-        <span class="question-number">3</span>
-        <span class="question-inner">Marcus settles slightly and says: <em>"I guess I like to know who I'm dealing with."</em> Which response best uses this opening?</span>
-      </div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="answer('s1q3','A','correct')">
-          <span class="option-letter">A</span>
-          <span class="option-text">"That makes a lot of sense. I wonder if that's something you find yourself doing in other situations too — needing to size things up before you can settle in."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q3','B','wrong')">
-          <span class="option-letter">B</span>
-          <span class="option-text">"Completely understandable. Here are a few things about me that might help you feel more comfortable…"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q3','C','wrong')">
-          <span class="option-letter">C</span>
-          <span class="option-text">"I think that may be related to what you said last week about trusting people."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s1q3','D','partial')">
-          <span class="option-letter">D</span>
-          <span class="option-text">"What would it mean to you to feel like you knew who you were dealing with?"</span>
-        </button>
-      </div>
-      <div class="feedback-panel" id="s1q3-feedback"></div>
-    </div>
-
-    <div class="score-summary" id="score-s1">
-      <div class="score-number" id="score-s1-num">–</div>
-      <div class="score-label">Session 01 Score</div>
-      <div class="score-message" id="score-s1-msg"></div>
-      <button class="reset-btn" onclick="resetSession(1)">Restart Session 01</button>
-    </div>
-
-    <div class="reflection-block">
-      <div class="reflection-label">Facilitator Debrief</div>
-      <div class="reflection-title">Questions for Discussion</div>
-      <ul class="reflection-questions">
-        <li>What did the therapist do that held the frame? What language was used?</li>
-        <li>Where did warmth and the frame come into tension? How was it navigated?</li>
-        <li>What might the patient's personal questions be communicating beyond their surface content?</li>
-        <li>What would you do differently next time?</li>
-      </ul>
-    </div>
-
-  </div><!-- /session-1 -->
-
-
-  <!-- ===================== SESSION 02 ===================== -->
-  <div class="session-section" id="session-2">
-
-    <div class="session-header">
-      <div class="session-number">Session 02</div>
-      <h2>Free Association &amp; Listening</h2>
-      <p class="session-intro">A 28-year-old graduate student, articulate but self-editing, is invited to free-associate in her fourth session. Your task is to follow the drift of her associations without summarising or redirecting — and to tolerate silence.</p>
-    </div>
-
-    <div class="vignette-card">
-      <div class="card-label">Clinical Vignette</div>
-      <p class="vignette-text">Priya, 28, a graduate student, settles into her chair. You invite her to say what comes to mind without editing herself. She begins: <strong>"A novel I'm reading — it's about a woman who disappears — my mother used to disappear when she was angry, not literally, she'd just go somewhere else — actually this room is colder than last week, isn't it—"</strong> She stops abruptly and looks at you. "Sorry, this is probably all over the place."</p>
-    </div>
-
-    <!-- Q4 -->
-    <div class="scenario-block" id="s2q1">
-      <div class="scenario-label">Question 1 of 3</div>
-      <div class="question-text">
-        <span class="question-number">4</span>
-        <span class="question-inner">Priya has just offered a chain of associations — novel, disappearing woman, her mother, the room's temperature — and then apologised. What is the best response?</span>
-      </div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="answer('s2q1','A','wrong')">
-          <span class="option-letter">A</span>
-          <span class="option-text">"Don't worry — so it sounds like your relationship with your mother may be important. Can you tell me more about that?"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q1','B','wrong')">
-          <span class="option-letter">B</span>
-          <span class="option-text">"I notice you moved from the novel, to your mother, to the room — I wonder what connects those things for you."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q1','C','correct')">
-          <span class="option-letter">C</span>
-          <span class="option-text">"It isn't all over the place at all. That's exactly it — just stay with wherever you are."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q1','D','wrong')">
-          <span class="option-letter">D</span>
-          <span class="option-text">"You mentioned your mother going somewhere else when she was angry. What was that like for you?"</span>
-        </button>
-      </div>
-      <div class="feedback-panel" id="s2q1-feedback"></div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Q5 -->
-    <div class="scenario-block" id="s2q2">
-      <div class="scenario-label">Question 2 of 3</div>
-      <div class="question-text">
-        <span class="question-number">5</span>
-        <span class="question-inner">Priya continues associating, then hits a sudden silence and says: <em>"Actually — I think I wanted to talk about my dissertation instead."</em> How do you respond?</span>
-      </div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="answer('s2q2','A','wrong')">
-          <span class="option-letter">A</span>
-          <span class="option-text">"Of course — what's happening with the dissertation?"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q2','B','partial')">
-          <span class="option-letter">B</span>
-          <span class="option-text">"I'm happy to go there — though I noticed the shift. Something came up and then you moved away from it."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q2','C','correct')">
-          <span class="option-letter">C</span>
-          <span class="option-text"><em>(Pause, sit with the silence a moment.)</em> "I noticed you stopped. Stay here for a moment — what just came up?"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q2','D','wrong')">
-          <span class="option-letter">D</span>
-          <span class="option-text">"I think you're avoiding something. The dissertation can wait."</span>
-        </button>
-      </div>
-      <div class="feedback-panel" id="s2q2-feedback"></div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Q6 -->
-    <div class="scenario-block" id="s2q3">
-      <div class="scenario-label">Question 3 of 3</div>
-      <div class="question-text">
-        <span class="question-number">6</span>
-        <span class="question-inner">Priya sits quietly for almost a full minute and then says: <em>"I keep thinking about whether my mother knows I'm in therapy."</em> What do you do?</span>
-      </div>
-      <div class="options-grid">
-        <button class="option-btn" onclick="answer('s2q3','A','wrong')">
-          <span class="option-letter">A</span>
-          <span class="option-text">"Does she? Have you told her?"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q3','B','wrong')">
-          <span class="option-letter">B</span>
-          <span class="option-text">"That feels like it connects to what you said earlier — your mother going somewhere else. There seems to be a theme about knowing and not knowing."</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q3','C','correct')">
-          <span class="option-letter">C</span>
-          <span class="option-text"><em>(Quietly.)</em> "What's the thought like — imagining her knowing?"</span>
-        </button>
-        <button class="option-btn" onclick="answer('s2q3','D','partial')">
-          <span class="option-letter">D</span>
-          <span class="option-text">"Say more about that."</span>
-        </button>
-      </div>
-      <div class="feedback-panel" id="s2q3-feedback"></div>
-    </div>
-
-    <div class="score-summary" id="score-s2">
-      <div class="score-number" id="score-s2-num">–</div>
-      <div class="score-label">Session 02 Score</div>
-      <div class="score-message" id="score-s2-msg"></div>
-      <button class="reset-btn" onclick="resetSession(2)">Restart Session 02</button>
-    </div>
-
-    <div class="reflection-block">
-      <div class="reflection-label">Facilitator Debrief</div>
-      <div class="reflection-title">Questions for Discussion</div>
-      <ul class="reflection-questions">
-        <li>Where did the resident's listening allow the patient to deepen?</li>
-        <li>Where did intervention close the associative process down?</li>
-        <li>What was the patient moving toward? What was being defended against?</li>
-        <li>How did the resident handle silence and the topic-change?</li>
-      </ul>
-    </div>
-
-  </div><!-- /session-2 -->
-
+</div><!-- /layout -->
 </div><!-- /wrap -->
 
 <script>
-  // State tracking
-  const state = {
-    s1q1: null, s1q2: null, s1q3: null,
-    s2q1: null, s2q2: null, s2q3: null,
-  };
-
-  const feedback = {
-    s1q1: {
-      correct: { label: 'Best Response', text: 'This response holds the frame beautifully: it neither answers the question nor refuses it harshly. By reflecting curiosity back to the patient, it keeps the door open — the question becomes material rather than an obstacle. Warmth and frame coexist.' },
-      wrong_A: { label: 'Not Recommended', text: 'Answering the personal question satisfies Marcus\'s surface request but forfeits the frame entirely. With a patient who manages anxiety through control, compliance like this may actually increase his anxiety — and closes off the richer question of what he was really asking.' },
-      wrong_B: { label: 'Too Abrupt', text: '"Let\'s focus on you" is technically correct in intent but brittle in delivery. The phrase can land as dismissive or scripted, damaging rapport in an early session. The frame can be held with far more warmth than this.' },
-      wrong_D: { label: 'Too Rigid', text: 'Citing rules distances you from the patient and can feel bureaucratic rather than therapeutic. The frame is best held through relational warmth, not policy statements.' },
-    },
-    s1q2: {
-      correct: { label: 'Best Response', text: 'This response does three things at once: it acknowledges his irritation as legitimate, it takes mild ownership of the awkwardness without capitulating, and it invites him gently into the deeper material. Warmth and curiosity are in balance.' },
-      wrong_A: { label: 'Over-Apologetic', text: 'Apologising for holding the frame undermines it. It also misreads his irritation: he doesn\'t need your apology, he needs to know you can hold your ground without becoming cold. Capitulation often increases a controlling patient\'s anxiety.' },
-      wrong_C: { label: 'Too Direct', text: 'Naming the anger in this moment is premature and a little clinical. It can feel like being diagnosed rather than being in conversation. The irritation has not fully formed — better to create space for it than to label it.' },
-      partial: { label: 'Reasonable, But…', text: 'This is a decent option. It acknowledges the question may carry more and invites curiosity. However it skips over the irritation entirely, and that missed moment may subtly communicate that his uncomfortable feelings aren\'t welcome.' },
-    },
-    s1q3: {
-      correct: { label: 'Best Response', text: 'This response takes his own words — "I like to know who I\'m dealing with" — and follows them into his wider relational world. It\'s exploratory rather than interpretive, linking without prescribing. Delivered warmly, it opens the session into genuine work.' },
-      wrong_B: { label: 'Breaks the Frame', text: 'Sharing personal information at this point may feel generous, but it actually forecloses the therapeutic process. You\'d be solving the surface problem rather than exploring what\'s beneath it.' },
-      wrong_C: { label: 'Premature', text: 'Reaching back to last week\'s content — with only the second session underway — can feel like a move to display competence rather than genuine curiosity. It\'s also likely too much to hold for a patient who is still assessing whether you\'re safe.' },
-      partial: { label: 'Good, Not Quite Best', text: 'Asking what it would mean to "feel like you knew who you were dealing with" is genuinely curious and open. It\'s slightly more abstract than Option A, which uses his own words and opens naturally into a relational pattern.' },
-    },
-    s2q1: {
-      correct: { label: 'Best Response', text: 'Reassuring Priya that free association is working — without redirecting her — keeps the process alive. "Just stay with wherever you are" is a simple, warm instruction that continues the invitation rather than interrupting it. The apology is heard and gently set aside.' },
-      wrong_A: { label: 'Redirects the Process', text: '"Can you tell me more about that?" redirects to a specific topic (the mother relationship) and effectively ends the free association. It also names a theme before the patient has arrived there herself, which can feel like being led.' },
-      wrong_B: { label: 'Interprets Too Soon', text: 'Naming the connections between novel, mother, and room is intellectually interesting — but it\'s an interpretation offered before the patient has had a chance to feel her own way there. Premature synthesis often causes patients to comply rather than deepen.' },
-      wrong_D: { label: 'Skips the Process', text: 'Asking about the mother\'s anger picks up one thread and follows it — which can be useful later — but at this moment it shuts down the associative process and turns the session into a more conventional, directed interview.' },
-    },
-    s2q2: {
-      correct: { label: 'Best Response', text: 'Tolerating the silence and gently returning Priya to what just happened — before the topic-change — keeps the associative process active. The question "what just came up?" is simple, open, and doesn\'t pre-load an answer. Silence is treated as data, not awkwardness to be filled.' },
-      wrong_A: { label: 'Follows the Avoidance', text: 'Accepting the topic-change without comment misses a significant moment. Priya has just moved away from something — possibly something close to the surface — and following her creates collusion with the avoidance.' },
-      partial: { label: 'Good, But…', text: 'Naming the shift is more active and useful than following the topic-change. The hesitation in the first clause ("I\'m happy to go there") slightly undercuts the observation. The best response acts on the silence before verbally naming the shift.' },
-      wrong_D: { label: 'Too Confrontational', text: '"You\'re avoiding something" is a confrontation that names resistance before the alliance is ready to hold it. Delivered this directly, it can feel like an accusation, and the patient is likely to defend rather than explore.' },
-    },
-    s2q3: {
-      correct: { label: 'Best Response', text: 'Following the association into the patient\'s felt experience — "what\'s the thought like" — continues the free-associative process without directing it. The single word "quietly" is important: the tone matches the fragility of the moment that just arrived out of a minute of silence.' },
-      wrong_A: { label: 'Literal', text: 'Asking whether she\'s told her mother is a factual question that pulls the conversation out of the internal world and into the external one. It follows the surface content rather than the affect underneath it.' },
-      wrong_B: { label: 'Premature Synthesis', text: 'Connecting the "knowing and not knowing" theme is genuinely astute — but offered at this point it can land as the therapist showing their work rather than accompanying the patient. Let the patient arrive at the pattern first.' },
-      partial: { label: 'Acceptable', text: '"Say more about that" is a useful, unobtrusive prompt that doesn\'t redirect. It\'s a safe fallback. Option C is preferable because it follows the patient\'s experience more specifically — "what\'s the thought like" — rather than simply asking her to continue.' },
-    },
-  };
-
-  function answer(qid, letter, type) {
-    if (state[qid] !== null) return; // already answered
-    state[qid] = type;
-
-    const block = document.getElementById(qid);
-    const btns = block.querySelectorAll('.option-btn');
-    const panel = document.getElementById(qid + '-feedback');
-    const fb = feedback[qid];
-
-    btns.forEach(btn => {
-      btn.disabled = true;
-      const l = btn.querySelector('.option-letter').textContent.trim();
-      if (l === letter) {
-        if (type === 'correct') btn.classList.add('selected-correct');
-        else if (type === 'wrong') btn.classList.add('selected-wrong');
-        else if (type === 'partial') btn.classList.add('selected-wrong');
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const SESSIONS = [
+{
+  id:'s01', num:'Session 01', title:'Setting the Frame & Therapeutic Stance',
+  intro:'A 34-year-old engineer in his second session arrives five minutes late and within minutes asks personal questions. Your task: hold the frame while remaining warm.',
+  vignette:'Marcus, 34, an engineer, drops his bag and scans the room. Within minutes he says: <strong>"Do you have kids? How long have you been doing this?"</strong> — casual in tone, but his eyes watch you carefully.',
+  questions:[
+    { qn:1, text:'Marcus asks whether you have children. Which response best holds the frame while remaining warm?',
+      opts:[
+        {l:'A',t:'Answer honestly: "I do have two children. Why do you ask?"',v:'wrong'},
+        {l:'B',t:'"That\'s something I don\'t discuss. Let\'s focus on you."',v:'wrong'},
+        {l:'C',t:'"I notice you\'re curious about me — I wonder what it would mean to you, one way or the other."',v:'correct'},
+        {l:'D',t:'"I don\'t answer personal questions. It\'s part of how this works."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This response holds the frame without refusing it harshly. By reflecting his curiosity back, the question becomes clinical material rather than an obstacle to clear. Warmth and the frame coexist.'},
+        wrong_A:{label:'Not Recommended',text:'Answering forfeits the frame entirely. With a patient who manages anxiety through control, compliance may actually increase anxiety and closes off the richer question of what he was really asking.'},
+        wrong_B:{label:'Too Abrupt',text:'"Let\'s focus on you" is correct in intent but brittle in delivery — easily heard as dismissive or scripted, damaging rapport in only the second session.'},
+        wrong_D:{label:'Too Rigid',text:'Citing rules distances you from the patient and can feel bureaucratic. The frame is best held through relational warmth, not policy statements.'},
       }
-      // Reveal correct if wrong/partial was chosen
-      if (type !== 'correct') {
-        // find correct
-        const optMap = getOptionMap(qid);
-        if (optMap[l] !== 'correct') {
-          // find the correct one
-          Object.entries(optMap).forEach(([ol, ot]) => {
-            if (ot === 'correct') {
-              block.querySelectorAll('.option-btn').forEach(b => {
-                if (b.querySelector('.option-letter').textContent.trim() === ol) {
-                  b.classList.add('revealed-correct');
-                }
-              });
-            }
-          });
-        }
+    },
+    { qn:2, text:'You gently decline to answer and Marcus becomes briefly irritated: <em>"It\'s just a question — I\'m not asking anything weird."</em> What is the most therapeutically useful response?',
+      opts:[
+        {l:'A',t:'"You\'re right, it was a perfectly reasonable question. I apologise for making it awkward."',v:'wrong'},
+        {l:'B',t:'"The irritation makes sense. I didn\'t answer straightforwardly, and that can feel dismissive. I\'m more interested in what\'s underneath the question than in keeping you at arm\'s length."',v:'correct'},
+        {l:'C',t:'"You seem angry. Can we explore that anger?"',v:'wrong'},
+        {l:'D',t:'"It\'s not weird at all. I just think those questions often carry something more — would you be curious about that?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This does three things at once: acknowledges his irritation as legitimate, takes mild ownership without capitulating, and invites him into the deeper material. Warmth and curiosity are in balance.'},
+        wrong_A:{label:'Over-Apologetic',text:'Apologising for holding the frame undermines it. He needs to know you can hold your ground without becoming cold. Capitulation often increases a controlling patient\'s anxiety.'},
+        wrong_C:{label:'Too Direct',text:'Naming anger in this moment is premature. It can feel like being diagnosed rather than being in conversation. Better to create space for it than to label it.'},
+        partial:{label:'Reasonable, But…',text:'This is decent — it invites curiosity without apologising. However it skips the irritation entirely. That missed moment may subtly communicate his uncomfortable feelings aren\'t welcome.'},
       }
+    },
+    { qn:3, text:'Marcus settles and says: <em>"I guess I like to know who I\'m dealing with."</em> Which response best uses this opening?',
+      opts:[
+        {l:'A',t:'"That makes a lot of sense. I wonder if that\'s something you find yourself doing in other situations too — needing to size things up before you can settle in."',v:'correct'},
+        {l:'B',t:'"Completely understandable. Here are a few things about me that might help you feel comfortable…"',v:'wrong'},
+        {l:'C',t:'"I think that connects to what you said last week about trusting people."',v:'wrong'},
+        {l:'D',t:'"What would it mean to you to feel like you knew who you were dealing with?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Takes his own words and follows them into his wider relational world. Exploratory rather than interpretive — linking without prescribing. Delivered warmly, it opens the session into genuine work.'},
+        wrong_B:{label:'Breaks the Frame',text:'Sharing personal information may feel generous, but it forecloses the process. You\'d be solving the surface problem rather than exploring what\'s beneath it.'},
+        wrong_C:{label:'Premature',text:'Reaching back to week one — in only the second session — can feel like a move to display competence rather than genuine curiosity. Likely too much to hold at this stage.'},
+        partial:{label:'Good, Not Quite Best',text:'"What would it mean?" is genuinely curious. Slightly more abstract than Option A, which uses his own words and opens naturally into a relational pattern.'},
+      }
+    },
+  ],
+  debrief:['What did the therapist do that held the frame? What language was used?','Where did warmth and the frame come into tension? How was it navigated?','What might the patient\'s personal questions be communicating beyond their surface content?','What would you do differently next time?'],
+},
+{
+  id:'s02', num:'Session 02', title:'Free Association & Listening',
+  intro:'A 28-year-old graduate student is invited to free-associate in her fourth session. Your task: follow the drift of her associations without summarising or redirecting — and tolerate silence.',
+  vignette:'Priya, 28, settles into her chair. You invite her to say whatever comes to mind without editing. She begins: <strong>"A novel I\'m reading — it\'s about a woman who disappears — my mother used to disappear when she was angry, not literally, she\'d just go somewhere else — actually this room is colder than last week—"</strong> She stops. "Sorry, this is probably all over the place."',
+  questions:[
+    { qn:4, text:'Priya has offered a chain of associations — novel, disappearing woman, her mother, the room\'s temperature — and then apologised. What is the best response?',
+      opts:[
+        {l:'A',t:'"Don\'t worry — so your relationship with your mother sounds important. Can you tell me more about that?"',v:'wrong'},
+        {l:'B',t:'"I notice you moved from the novel, to your mother, to the room — I wonder what connects those things for you."',v:'wrong'},
+        {l:'C',t:'"It isn\'t all over the place at all. That\'s exactly it — just stay with wherever you are."',v:'correct'},
+        {l:'D',t:'"You mentioned your mother going somewhere else when she was angry. What was that like for you?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Reassuring Priya that free association is working — without redirecting her — keeps the process alive. "Just stay with wherever you are" continues the invitation rather than interrupting it.'},
+        wrong_A:{label:'Redirects the Process',text:'"Can you tell me more about that?" effectively ends free association by directing to a specific topic. It also names a theme before the patient has arrived there herself.'},
+        wrong_B:{label:'Interprets Too Soon',text:'Naming the connections is intellectually astute — but offered before the patient has felt her own way there. Premature synthesis often causes patients to comply rather than deepen.'},
+        wrong_D:{label:'Skips the Process',text:'Picking up one thread and following it turns the session into a more conventional, directed interview. It shuts down the associative process.'},
+      }
+    },
+    { qn:5, text:'Priya continues, then hits a sudden silence and says: <em>"Actually — I think I wanted to talk about my dissertation instead."</em> How do you respond?',
+      opts:[
+        {l:'A',t:'"Of course — what\'s happening with the dissertation?"',v:'wrong'},
+        {l:'B',t:'"I\'m happy to go there — though I noticed the shift. Something came up and then you moved away from it."',v:'partial'},
+        {l:'C',t:'<em>(Pause, sit with the silence.)</em> "I noticed you stopped. Stay here for a moment — what just came up?"',v:'correct'},
+        {l:'D',t:'"I think you\'re avoiding something. The dissertation can wait."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Tolerating the silence and returning Priya to what just happened keeps the associative process active. "What just came up?" is simple, open, and doesn\'t pre-load an answer. Silence is treated as data, not awkwardness.'},
+        wrong_A:{label:'Follows the Avoidance',text:'Accepting the topic-change without comment misses a significant moment. Priya has just moved away from something close to the surface — following her creates collusion with the avoidance.'},
+        partial:{label:'Good, But…',text:'Naming the shift is more active than following the topic-change. The hesitation in the first clause slightly undercuts the observation. The best response acts on the silence before verbally naming the shift.'},
+        wrong_D:{label:'Too Confrontational',text:'"You\'re avoiding something" names resistance before the alliance is ready to hold it. Delivered this directly, it can feel like an accusation and the patient is likely to defend rather than explore.'},
+      }
+    },
+    { qn:6, text:'After a full minute of silence, Priya says: <em>"I keep thinking about whether my mother knows I\'m in therapy."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"Does she know? Have you told her?"',v:'wrong'},
+        {l:'B',t:'"That feels like it connects to what you said earlier — your mother going somewhere else. There\'s a theme about knowing and not knowing."',v:'wrong'},
+        {l:'C',t:'<em>(Quietly.)</em> "What\'s the thought like — imagining her knowing?"',v:'correct'},
+        {l:'D',t:'"Say more about that."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Following the association into the patient\'s felt experience — "what\'s the thought like" — continues the associative process without directing it. The quiet tone matches the fragility of the moment.'},
+        wrong_A:{label:'Literal',text:'Asking whether she\'s told her mother is a factual question that pulls out of the internal world and into the external one. It follows surface content rather than the affect underneath.'},
+        wrong_B:{label:'Premature Synthesis',text:'Connecting the theme is astute — but offered here it can land as the therapist showing their work rather than accompanying the patient. Let the patient arrive at the pattern first.'},
+        partial:{label:'Acceptable',text:'"Say more about that" is a useful, unobtrusive prompt that doesn\'t redirect. It\'s a safe fallback. Option C is preferable because it follows the patient\'s experience more specifically.'},
+      }
+    },
+  ],
+  debrief:['Where did the resident\'s listening allow the patient to deepen?','Where did intervention close the associative process down?','What was the patient moving toward? What was being defended against?','How did the resident handle silence and the topic-change?'],
+},
+{
+  id:'s03', num:'Session 03', title:'Resistance',
+  intro:'A 45-year-old attorney arrives eight minutes late and immediately launches into a detailed, well-organised story about a work conflict. Your task: notice the pattern and name the resistance gently without breaking the alliance.',
+  vignette:'David, 45, an attorney, arrives late and waves it off. He settles and immediately begins: <strong>"So there\'s this partner at the firm — the whole thing has been infuriating, and I want to give you the full picture…"</strong> His account is vivid, detailed, and entirely external. Twenty minutes pass. He has not once mentioned his own feelings.',
+  questions:[
+    { qn:7, text:'David is 20 minutes into a detailed external account with no inner reflection. What is the most appropriate first move?',
+      opts:[
+        {l:'A',t:'Follow the story and ask clarifying questions about the conflict at the firm.',v:'wrong'},
+        {l:'B',t:'"I notice we\'ve spent most of the hour talking about what\'s happening at the firm. I\'m curious about that."',v:'correct'},
+        {l:'C',t:'"You seem to be avoiding talking about yourself. What are you protecting against?"',v:'wrong'},
+        {l:'D',t:'Wait until the story ends and then ask how he feels about the partner.',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This is Level 2 naming — noticing the process without accusing. "I\'m curious about that" signals approach rather than judgment. It names the pattern without using the word resistance and gives the patient room to respond.'},
+        wrong_A:{label:'Joins the Resistance',text:'Asking clarifying questions about the external conflict follows the patient\'s avoidance. It communicates that you accept the defensive structure, which deepens rather than addresses it.'},
+        wrong_C:{label:'Too Confrontational',text:'Naming what he\'s avoiding and demanding an explanation in the same breath is too much, too soon. The alliance has not been built to hold this degree of directness.'},
+        partial:{label:'Reasonable Timing, Weak Move',text:'Waiting is reasonable — but asking how he feels about the partner continues the external focus. The better move is to name the overall pattern, not ask for affect about one figure in it.'},
+      }
+    },
+    { qn:8, text:'When you name the pattern, David says: <em>"I mean, that\'s just what happened — I need to give you context."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"Of course — please go ahead with the full context."',v:'wrong'},
+        {l:'B',t:'"I\'m not saying the context isn\'t important. I\'m curious about the part of you that finds it easier to talk about the firm than about yourself."',v:'correct'},
+        {l:'C',t:'"I think you use talking about others as a way to avoid dealing with your own feelings."',v:'wrong'},
+        {l:'D',t:'"What would it be like to talk about yourself rather than the partner?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This names the resistance and the self in the same sentence without dismissing his defense. "The part of you that finds it easier…" treats the resistance as ego-syntonic rather than defective — which is both accurate and kinder.'},
+        wrong_A:{label:'Capitulates',text:'Accepting his framing — that more context is needed — abandons the naming and reinstates the resistance. The pattern is likely to continue for the rest of the session.'},
+        wrong_C:{label:'Too Interpretive',text:'Offering a full explanation of the defense function before the patient has even acknowledged the pattern is premature interpretation — and it is delivered as a verdict rather than an inquiry.'},
+        partial:{label:'Good Question, Too Soon',text:'"What would it be like to talk about yourself?" is a useful question — but it jumps ahead. The patient hasn\'t yet acknowledged the pattern; the question implies he has.'},
+      }
+    },
+    { qn:9, text:'David becomes quieter and says: <em>"I don\'t really know how to do that."</em> This is a significant moment. What is the most therapeutically useful response?',
+      opts:[
+        {l:'A',t:'Explain what it means to explore inner experience and offer some techniques.',v:'wrong'},
+        {l:'B',t:'"Good — then let\'s start there. What\'s happening inside right now, as you say that?"',v:'correct'},
+        {l:'C',t:'"That makes sense given what you\'ve told me about your family."',v:'wrong'},
+        {l:'D',t:'"That\'s okay — we can take our time."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The resistance has cracked open into genuine vulnerability: "I don\'t know how to do that" is itself a piece of internal experience. The best response turns immediately to that moment rather than explaining or reassuring.'},
+        wrong_A:{label:'Didactic',text:'Offering instruction on how to explore inner experience at this moment is a retreat into the therapist\'s role as expert. It bypasses the vulnerability just expressed and turns the session into a lecture.'},
+        wrong_C:{label:'Premature Interpretation',text:'Connecting his difficulty with self-reflection to his family history may eventually be correct — but offered in this moment, it moves away from what\'s happening now. The here-and-now experience is the material.'},
+        partial:{label:'Kind, But Misses the Moment',text:'"We can take our time" is reassuring but sidesteps the opening. The patient has just shown you the work — the better response is to move directly into it.'},
+      }
+    },
+  ],
+  debrief:['When was the resistance first noticeable, and what was its form?','What language did the resident use to name it?','Did the alliance hold during the intervention?','What was the resistance protecting?'],
+},
+{
+  id:'s04', num:'Session 04', title:'Transference: Identification & Early Interventions',
+  intro:'A 31-year-old ICU nurse in her eighth session opens by quoting you (slightly inaccurately) and telling you you\'re "the best therapist she\'s ever had." Your task: recognise the idealisation, neither accept it nor puncture it, and stay curious.',
+  vignette:'Sara, 31, an ICU nurse, opens brightly: <strong>"I was thinking about what you said last week — \'the most important thing is what you do with the feeling\' — and I told my friend: she has to see you. You\'re the best therapist I\'ve ever had."</strong> The quote is slightly elevated from what you actually said.',
+  questions:[
+    { qn:10, text:'Sara has just idealised you. Which response best holds the moment without accepting or puncturing it?',
+      opts:[
+        {l:'A',t:'"Thank you — that really means a lot. I\'m glad the work has felt useful."',v:'wrong'},
+        {l:'B',t:'"I\'m not sure your other therapist would agree with that — I\'m sure they had a lot to offer too."',v:'wrong'},
+        {l:'C',t:'"I notice the strength of that. I\'m curious what it does for you to feel that this is finally the place where you\'re understood."',v:'correct'},
+        {l:'D',t:'"I think you might be idealising me. It\'s worth thinking about what that means."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'"Curious" reflects a genuine clinical posture. The question is real: what is this idealisation doing for this person? What need does it serve? This is the exploration, not a technique to display.'},
+        wrong_A:{label:'Accepts the Idealization',text:'Gratifying the transference wish closes the exploration. The material disappears. If you agree, you\'re asking the patient to let go of something very real to them rather than examine it.'},
+        wrong_B:{label:'Deflects Awkwardly',text:'False modesty dismisses the patient\'s experience without exploring it. "Your other therapist was good too" sounds competitive and slightly uncomfortable — it shuts down rather than opens.'},
+        wrong_D:{label:'Punctures Prematurely',text:'Naming idealisation directly may be accurate — but experienced as a rejection of the patient\'s offered connection. It shuts down material rather than opening it, especially this early.'},
+      }
+    },
+    { qn:11, text:'Sara says: <em>"I don\'t know, I just feel like you actually get it — like you understand the part of me I never thought anyone would understand."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"That\'s what I want this to be for you."',v:'wrong'},
+        {l:'B',t:'"Tell me more about the part of you you never thought anyone would understand."',v:'correct'},
+        {l:'C',t:'"I wonder what happened in previous therapy that left you feeling so misunderstood."',v:'partial'},
+        {l:'D',t:'"I think we need to be careful about overstating what I can offer."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This moves directly from the idealisation into the clinical material it has revealed: a part of herself she feared was unknowable. This is the gold beneath the idealisation, and the question pursues it without reinforcing the inflated view of you.'},
+        wrong_A:{label:'Colludes',text:'Accepting the framing — "that\'s what I want this to be" — aligns you with the idealisation. It feels kind but forecloses exploration.'},
+        partial:{label:'Reasonable',text:'Exploring previous therapy is a legitimate direction. However it moves into the past when the more important material — the "part of herself" — has just been named and is available in the present.'},
+        wrong_D:{label:'Deflates Unnecessarily',text:'Managing the patient\'s expectations is sometimes necessary but this moment doesn\'t call for it. "Be careful about overstating" introduces doubt where curiosity is more productive.'},
+      }
+    },
+    { qn:12, text:'Sara pauses and says quietly: <em>"I think I want you to like me."</em> This is a significant shift. What is the most useful response?',
+      opts:[
+        {l:'A',t:'"I do like you — very much."',v:'wrong'},
+        {l:'B',t:'"That took courage to say. What comes up for you as you say it out loud?"',v:'correct'},
+        {l:'C',t:'"I wonder if that\'s connected to wanting to be understood — that being liked and being understood feel the same to you."',v:'partial'},
+        {l:'D',t:'"Do you often feel that way — wanting the other person to like you?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The patient has just moved from idealisation to genuine vulnerability. Acknowledging the courage and returning immediately to her experience keeps the movement going. This is what the curiosity-stance produces.'},
+        wrong_A:{label:'Gratifies',text:'Saying "I do like you" is kind and probably true — but it resolves the tension rather than working with it. The patient needed to feel the wish, not have it answered.'},
+        partial:{label:'Interesting, But Premature',text:'The connection between liking and understanding may eventually be right — but the patient has just arrived at something raw. An interpretation in this moment may intellectualise rather than hold what just surfaced.'},
+        wrong_D:{label:'Deflects to History',text:'Moving immediately to a general pattern ("do you often feel this way?") turns a live moment into a questionnaire. Stay in the present first.'},
+      }
+    },
+  ],
+  debrief:['How did the resident respond to the opening idealisation?','Was the transference recognised, or treated as just a compliment?','What did the therapist\'s neutral, curious stance produce?','What was beneath the idealisation?'],
+},
+{
+  id:'s04b', num:'Session 04B', title:'Negative Transference, Race & the Therapeutic Relationship',
+  intro:'Maya, 32, a Black social worker in her seventh session with a white therapist, opens: "I don\'t think you really understand my life." Your task: stay in the room. Do not defend, do not collapse. Stay curious.',
+  vignette:'Maya, 32, a Black social worker referred for anxiety and work-related stress, has been engaged and productive in therapy. Today she opens: <strong>"I don\'t think you really understand my life."</strong> She means it — not as an attack, but as something that has been building: a growing awareness that the therapy exists in a context the therapist has not fully acknowledged.',
+  questions:[
+    { qn:13, text:'Maya says: "I don\'t think you really understand my life." What is the best first response?',
+      opts:[
+        {l:'A',t:'"I try my best to understand all my patients equally — I hope you\'ve felt heard here."',v:'wrong'},
+        {l:'B',t:'"You\'re absolutely right, and I\'m so sorry. I should have raised this sooner."',v:'wrong'},
+        {l:'C',t:'"Tell me more about that. What\'s been missing?"',v:'correct'},
+        {l:'D',t:'"That\'s an important thing to say. I wonder what\'s brought it up today."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Leaning toward her experience rather than away from it. The therapist does not defend, does not over-apologise, does not turn toward their own discomfort. "What\'s been missing?" invites the fullness of her experience into the room.'},
+        wrong_A:{label:'White Fragility',text:'Asserting equal treatment deflects from the specific claim. It says: I am more concerned with being seen as fair than with receiving your experience. The patient hears her concern has been managed, not met.'},
+        wrong_B:{label:'Guilt-Centered Collapse',text:'Over-apologising centres the therapist\'s distress. Now the patient is managing your feelings rather than having her own received. The apology is about your relief, not her experience.'},
+        partial:{label:'Good, Slightly Indirect',text:'"What\'s brought it up today?" is a reasonable clinical curiosity but risks feeling like redirection — inviting her to explain rather than simply asking her to say more.'},
+      }
+    },
+    { qn:14, text:'Maya goes deeper: she describes the hypervigilance she carries in white institutional spaces, the exhaustion of code-switching, the experience of having her competence questioned. What do you do?',
+      opts:[
+        {l:'A',t:'Reflect back the content: "So it sounds like there\'s a lot of exhaustion around having to perform for others."',v:'partial'},
+        {l:'B',t:'Sit quietly and allow the full weight of what she is saying to land before responding.',v:'correct'},
+        {l:'C',t:'"I can only imagine how tiring that must be."',v:'wrong'},
+        {l:'D',t:'"I wonder if some of what you describe with colleagues is also present here, between us."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'She has been waiting to say some of this. The most important thing the therapist can do is receive it fully before responding. The silence is not emptiness — it is the weight of genuine contact. Receiving precedes everything else.'},
+        partial:{label:'Reasonable But Premature',text:'Reflecting the exhaustion is not wrong — but it condenses what she has just said into a summary. The better move is to stay with it, let it land, before reaching for language.'},
+        wrong_C:{label:'Performative Empathy',text:'"I can only imagine" is a common empathy script that often signals the opposite — that the therapist is managing their discomfort with a phrase rather than actually staying with the patient\'s experience.'},
+        wrong_D:{label:'Too Soon',text:'The transference interpretation — connecting her experience at work to what happens between you — is eventually important. But offered before she feels received, it will land as deflection: bringing the experience back to the therapy before it has been fully heard.'},
+      }
+    },
+    { qn:15, text:'Maya asks directly: <em>"Do you think you actually understand what it\'s like to be me?"</em> What is the honest, clinically useful response?',
+      opts:[
+        {l:'A',t:'"Yes — I\'ve worked with many patients from different backgrounds and I believe I understand."',v:'wrong'},
+        {l:'B',t:'"No — not fully. I don\'t carry what you carry, and I can\'t pretend otherwise. But I want to understand as much as I can — and you\'re helping me do that."',v:'correct'},
+        {l:'C',t:'"I think that\'s something we should explore together rather than me trying to answer."',v:'wrong'},
+        {l:'D',t:'"Honestly, probably not — and I\'m sorry for that."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This is honest, non-defensive, and moves toward her rather than away. It acknowledges the real limit without collapsing into guilt. And it repositions the therapy as a place where that gap can be worked with, not just lamented.'},
+        wrong_A:{label:'Dismisses the Claim',text:'Asserting understanding based on prior experience with "diverse patients" is exactly the kind of response that confirms a patient\'s doubt. It says: I have training, therefore I see you. That is not the same thing.'},
+        wrong_C:{label:'Avoids the Question',text:'Turning her direct question back into a clinical process deflects. She asked you something real. A clinical non-answer can feel like another experience of not being met.'},
+        partial:{label:'Honest But Incomplete',text:'"I\'m sorry for that" edges back toward guilt-centered collapse. The apology, unaccompanied by a forward movement, centres the therapist\'s distress rather than the patient\'s experience.'},
+      }
+    },
+  ],
+  debrief:['What was the therapist\'s first internal response to "I don\'t think you really understand my life"? Name it.','Did the resident defend, collapse, or stay curious? What were the behavioural cues?','How did the patient\'s experience of being received — or not — show up in her subsequent responses?','What is the difference between white fragility (defensive self-protection) and guilt-centred collapse (performative over-apology)?'],
+},
+{
+  id:'s05', num:'Session 05', title:'Countertransference as Clinical Data',
+  intro:'A 52-year-old business owner going through a contested divorce, fifth session. He arrives and begins listing complaints in a flat monotone. Your task: notice what is happening in you and use it as data rather than act on it.',
+  vignette:'Robert, 52, sits down and begins: <strong>"Can\'t sleep. Appetite\'s off. My lawyer is useless. My wife\'s lawyer is worse. The mediator suggested something insane last week. I don\'t even know why I bother…"</strong> His voice is flat. The room feels heavy. You notice you\'re slightly bored — and vaguely irritated.',
+  questions:[
+    { qn:16, text:'You notice you feel slightly bored and want to offer solutions to his practical problems. What is the most useful thing to do with this reaction?',
+      opts:[
+        {l:'A',t:'Recognise it as complementary countertransference — what everyone in his life probably feels — and use it to understand his isolation rather than act on it.',v:'correct'},
+        {l:'B',t:'Offer a practical suggestion about his legal situation to shift the energy in the room.',v:'wrong'},
+        {l:'C',t:'Ask Robert directly whether he notices the flatness in the room.',v:'partial'},
+        {l:'D',t:'Ignore it — personal reactions are a distraction from the clinical work.',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This is Racker\'s complementary countertransference: you feel what significant others in his life feel. The pull to problem-solve is data about what everyone does to him — and why he is increasingly alone. The CT is showing you exactly what the patient experiences from the world.'},
+        wrong_B:{label:'Acts on the CT',text:'Offering a practical suggestion uses the countertransference to manage your own discomfort rather than to understand the patient. The session becomes about your need to be useful rather than his need to be in contact.'},
+        partial:{label:'Possible, But Premature',text:'Naming the flatness in the room is a useful move — but you need to know what the CT is telling you before you bring it into the room. The sequence is: feel it, understand it, then decide whether to use it.'},
+        wrong_D:{label:'Ignores Clinical Data',text:'Dismissing your own reactions as distractions is the pre-Heimann position — the view that was overturned. Your reactions are the most specific data you have about this patient\'s relational world.'},
+      }
+    },
+    { qn:17, text:'You decide to use your countertransference to make contact. What is the best way to bring it into the room?',
+      opts:[
+        {l:'A',t:'"I\'ll be honest — I\'ve been feeling a little bored listening to this, and I want to name that."',v:'wrong'},
+        {l:'B',t:'"I\'m aware of something heavy in the room today. I wonder if you\'re aware of it too."',v:'correct'},
+        {l:'C',t:'"It sounds like everything feels grey right now."',v:'partial'},
+        {l:'D',t:'"You seem exhausted — is that how you feel?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This uses the CT to open a shared space rather than self-disclose the feeling directly. "I wonder if you\'re aware of it too" is an invitation — it brings the patient into contact with what\'s in the room without making it about the therapist\'s experience.'},
+        wrong_A:{label:'Disclosive and Harmful',text:'Disclosing boredom directly — even framed as honesty — is likely experienced as a rejection. It turns the CT into a burden for the patient to manage rather than a window into his experience.'},
+        partial:{label:'Empathic But Passive',text:'"Everything feels grey" follows the content rather than naming the relational texture. It\'s a gentle reflection — better than nothing, but misses the opportunity to open a shared observation about what\'s happening between you.'},
+        wrong_D:{label:'Labels Too Quickly',text:'Asking whether he feels exhausted names a possible emotion but bypasses the invitation to co-observe. The patient may confirm it and move on, which doesn\'t open much.'},
+      }
+    },
+    { qn:18, text:'Robert pauses after your observation about the heaviness. He says: <em>"Yeah. I guess. I don\'t really know what I\'m doing here."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"Let\'s talk about what brought you here — what were you hoping for when you started?"',v:'wrong'},
+        {l:'B',t:'"Stay with that. What does \'not knowing what you\'re doing here\' feel like, sitting here right now?"',v:'correct'},
+        {l:'C',t:'"I think that\'s the most real thing you\'ve said today."',v:'partial'},
+        {l:'D',t:'"That\'s understandable given everything you\'re going through."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The contact has been made — the patient has moved from the external to the internal. The therapist\'s job is to stay right there with him. "Stay with that" communicates that this is the right place, and the question deepens into the present moment.'},
+        wrong_A:{label:'Moves to History',text:'Returning to the beginning of therapy moves away from the opening that has just appeared. It replaces the live moment with an intake question.'},
+        partial:{label:'True But Risks Flattery',text:'"The most real thing you\'ve said today" names the significance of the shift and is probably right — but it can land as a subtle criticism of everything before it. The better move is to stay with the experience, not evaluate it.'},
+        wrong_D:{label:'Reassures',text:'"Understandable given everything" normalises and closes the moment. It takes the sting out of what he\'s said rather than staying with it.'},
+      }
+    },
+  ],
+  debrief:['What did the resident feel in the first five minutes?','Did they act on the feeling, or hold it as information?','What kind of countertransference was this — concordant, complementary, or both?','What might the patient be communicating through the pull?'],
+},
+{
+  id:'s06', num:'Session 06', title:'Defense Mechanisms — Humor & Working Through',
+  intro:'A 38-year-old veterinarian, seventh session, six months after her father\'s sudden death — though she came to therapy citing "life stress." Today she\'s particularly funny. Your task: name the pattern gently without breaking the alliance.',
+  vignette:'Claire, 38, a veterinarian, arrives smiling. She tells a story about a parrot that bit a client — it\'s genuinely funny and you both laugh. Then, without a pause: <strong>"My dad would have loved that story. Anyway — I have a situation with one of my staff members I wanted to talk about…"</strong> She moves on without looking back.',
+  questions:[
+    { qn:19, text:'Claire mentioned her father in passing and immediately moved on. It\'s the third time this has happened this session. What do you do?',
+      opts:[
+        {l:'A',t:'Follow her to the staff member issue — she\'s clearly not ready to talk about her father.',v:'wrong'},
+        {l:'B',t:'"I\'m going to come back to something — your dad arrived just for a second, and then was gone again."',v:'correct'},
+        {l:'C',t:'"I notice every time we get close to your father, the conversation moves on. You use humour to avoid the grief."',v:'wrong'},
+        {l:'D',t:'"How are you doing with the loss of your dad?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This names the pattern without naming it as a defense. The language "arrived and then was gone" is poetic and gentle — it reflects the father\'s movement in the session without confronting the patient\'s coping strategy. It leaves the door open rather than forcing entry.'},
+        wrong_A:{label:'Colludes with the Defense',text:'Following her to the next topic joins the deflection. The humor has done its work; the grief has been safely passed. You lose the signal by accepting it.'},
+        wrong_C:{label:'Too Confrontational',text:'Naming the defense explicitly — and labelling the grief in the same breath — is technically accurate and clinically damaging at this stage. The patient will become brittle rather than open.'},
+        partial:{label:'Possible, But Direct',text:'Asking directly about the loss is not wrong and shows you\'ve held the thread. But it\'s slightly blunt — it presses rather than opens. The better move catches the moment as it passes rather than turning toward it head-on.'},
+      }
+    },
+    { qn:20, text:'Claire pauses, looks slightly caught, then laughs: <em>"Ha — okay, yes, you caught me. I do that."</em> How do you respond?',
+      opts:[
+        {l:'A',t:'"You do. The humour is wonderful — but I notice it often comes just as something real is getting close."',v:'correct'},
+        {l:'B',t:'"So let\'s talk about your father."',v:'wrong'},
+        {l:'C',t:'"You don\'t have to get out of it. I just want us to notice it together."',v:'correct'},
+        {l:'D',t:'"What do you think you\'re protecting yourself from?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Either A or C works well',text:'Option A names the pattern warmly — celebrating the humor while holding the observation. Option C is the model language from the lecture: "You don\'t have to get out of it. I just want us to notice it together." Both invite partnership rather than confrontation.'},
+        wrong_B:{label:'Too Directive',text:'"So let\'s talk about your father" is an instruction rather than an invitation. Having just laughed together, this feels like a bait-and-switch — the warmth was withdrawn to get to the material.'},
+        wrong_D:{label:'Premature Depth',text:'"What are you protecting yourself from?" moves to interpretation before the patient has had time to settle into the observation. It can feel like being cornered just as she\'s opened a crack.'},
+      }
+    },
+    { qn:21, text:'Claire grows quieter and says: <em>"I think if I start talking about him, I won\'t be able to stop."</em> What is the most useful response?',
+      opts:[
+        {l:'A',t:'"Then let\'s make sure we have time. What do you want to say about him?"',v:'correct'},
+        {l:'B',t:'"Maybe that\'s okay — maybe that\'s what needs to happen."',v:'partial'},
+        {l:'C',t:'"I understand. We don\'t have to go there today if you\'re not ready."',v:'wrong'},
+        {l:'D',t:'"That\'s what grief can feel like — overwhelming and bottomless."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'She has named her fear — that feeling would be unstoppable — and has implicitly asked whether this is a safe enough place for that. "What do you want to say about him?" accepts the invitation and moves directly into the opening without forcing or reassuring.'},
+        partial:{label:'Permissive But Vague',text:'"Maybe that\'s okay" validates the possibility without actively opening it. It\'s a gentle nudge rather than a clear invitation. Slightly more passive than the moment calls for.'},
+        wrong_C:{label:'Closes the Door',text:'"We don\'t have to go there" explicitly withdraws the invitation. It may feel considerate but communicates that you\'re not entirely sure the space can hold it — which is the opposite of what she needs to hear.'},
+        wrong_D:{label:'Psychoeducation',text:'Explaining grief as "overwhelming and bottomless" turns a clinical moment into a teaching moment. It also assumes the content of her experience before she\'s described it.'},
+      }
+    },
+  ],
+  debrief:['When was humour functioning as a defense versus as genuine connection?','How did the resident name the pattern, and what effect did it have?','What did the defense protect against?','What kind of response would the patient experience as safe enough to soften?'],
+},
+{
+  id:'s07', num:'Session 07', title:'Clarification, Confrontation & Sequencing',
+  intro:'A 41-year-old project manager, ninth session, tells a story about a meeting that contains a contradiction. He describes himself as listening patiently — then describes interrupting his colleague three times. Your task: clarify, then confront gently. Hold back interpretation.',
+  vignette:'Tom, 41, a hospital project manager, describes a recent meeting: <strong>"I was just letting her go, you know — I had my pad in front of me, I was taking notes, I was being really patient. Then she went off on a tangent and I had to redirect her — twice. Maybe three times."</strong> He looks slightly uncomfortable but moves on.',
+  questions:[
+    { qn:22, text:'You\'ve noticed the contradiction — "being really patient" versus "redirecting her three times." What is the first move?',
+      opts:[
+        {l:'A',t:'Offer an interpretation: "It sounds like you may have difficulty tolerating being challenged or corrected."',v:'wrong'},
+        {l:'B',t:'Clarify the sequence: "Walk me through that more slowly — what happened first, and when did you redirect her?"',v:'correct'},
+        {l:'C',t:'"You said you were being patient, but you also said you interrupted her three times — those seem in tension."',v:'partial'},
+        {l:'D',t:'Accept the story as he\'s told it and ask how he felt about the outcome.',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Clarify before confronting. You need a shared factual picture before drawing any conclusions from it. The act of slowing the story often makes the contradiction visible to the patient before you need to name it.'},
+        wrong_A:{label:'Premature Interpretation',text:'Jumping directly to interpretation — without establishing the factual contradiction — trades on credibility you haven\'t yet built in this moment. The patient becomes defensive because they haven\'t seen what you\'re pointing at.'},
+        partial:{label:'Confronts Too Soon',text:'This is confrontation without prior clarification. You may be right about the tension — but the patient needs to have told the story slowly enough that the contradiction becomes undeniable before you present it back.'},
+        wrong_D:{label:'Accepts the Frame',text:'Taking the story at face value closes the clinical opportunity. The contradiction embedded in it — and what it might reveal about his self-image — is the work.'},
+      }
+    },
+    { qn:23, text:'After clarifying the sequence, the contradiction is clear. Tom told her she was going off-track three times and described this as being patient. Now what?',
+      opts:[
+        {l:'A',t:'"I notice you described redirecting her three times, and also described yourself as listening patiently. I\'m not saying you\'re wrong — I\'m curious what we make of that together."',v:'correct'},
+        {l:'B',t:'"It sounds like you find it hard to tolerate someone going off in a direction you haven\'t approved."',v:'wrong'},
+        {l:'C',t:'"Those two things seem different to me — interrupting someone three times doesn\'t quite fit with patient listening."',v:'partial'},
+        {l:'D',t:'"Are you someone who needs to be in control of conversations?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Holds both pieces of evidence side by side without explaining what they mean. "I\'m curious what we make of that together" signals a joint investigation. The patient is invited to see the contradiction and begin working with it themselves.'},
+        wrong_B:{label:'Interprets Prematurely',text:'Offering the interpretation — "difficulty tolerating someone going off track" — before the patient has seen the contradiction skips the step that makes the meaning feel real. The patient hears a verdict.'},
+        partial:{label:'Names the Gap, But Firmly',text:'This is a confrontation, which is the right level — but the tone is slightly declarative. "Doesn\'t quite fit" closes toward a verdict. The better language ("I\'m curious what we make of that") opens toward investigation.'},
+        wrong_D:{label:'Accusatory',text:'"Do you need to be in control?" is a direct interpretation phrased as a question. It\'s experienced as an accusation. Even if accurate, the timing and phrasing will produce defensiveness rather than reflection.'},
+      }
+    },
+    { qn:24, text:'Tom rationalises: <em>"She really was going off track — the meeting had an agenda. I had to keep it on track."</em> What do you do?',
+      opts:[
+        {l:'A',t:'Accept his explanation — she may well have been off-track.',v:'wrong'},
+        {l:'B',t:'"Maybe — and I still want to stay with the two descriptions for a moment. Because the question isn\'t whether you were right to redirect her. It\'s how you understand yourself in that moment."',v:'correct'},
+        {l:'C',t:'"I think you\'re rationalising — you interrupted her, and now you\'re justifying it."',v:'wrong'},
+        {l:'D',t:'"What do you think the word patient means to you?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Stays with both pieces of evidence without accepting his rationalisation or confronting it directly. The key distinction — "the question isn\'t whether you were right, it\'s how you understand yourself" — is the clinical move. It keeps the focus on self-perception, not on whether he was justified.'},
+        wrong_A:{label:'Closes the Work',text:'Accepting his framing ends the confrontation prematurely. His rationalisation may be partly accurate — but the clinical material is his self-image, not the meeting\'s logistics.'},
+        wrong_C:{label:'Accusatory',text:'Naming the rationalisation explicitly ("you\'re rationalising") is technically correct and experienced as a judgment. The patient will likely move from rationalisation to defense of the rationalisation.'},
+        partial:{label:'Curious But Indirect',text:'Asking what patient means to him is a genuinely curious question — but slightly abstract at this moment. The more direct move stays with the specific contradiction he\'s just tried to resolve.'},
+      }
+    },
+  ],
+  debrief:['Did the resident clarify before confronting?','How was the contradiction named? With what tone?','Was interpretation held back, or offered prematurely?','What did the patient\'s response tell you about the timing?'],
+},
+{
+  id:'s08', num:'Session 08', title:'Interpretation — From Surface to Depth',
+  intro:'A 36-year-old marketing director, eleventh session. Three pieces of material have emerged: her partner\'s mother\'s medical appointment, a failing project absorbed from her boss, and a moment in session where she chose "the bigger thing." Your task: formulate and offer a three-domain interpretation.',
+  vignette:'Elena, 36, has described: <strong>(1)</strong> organising her partner\'s mother\'s medical appointments this week; <strong>(2)</strong> absorbing a failing project from her boss ("someone had to save it"); <strong>(3)</strong> saying in session, "I didn\'t want to waste time on something small — the other thing is more important." She hasn\'t connected these herself.',
+  questions:[
+    { qn:25, text:'You\'ve gathered material across three domains. Before offering an interpretation, what do you do?',
+      opts:[
+        {l:'A',t:'Offer the interpretation now — three data points is sufficient.',v:'partial'},
+        {l:'B',t:'Lay the three pieces of material side by side aloud and invite her to observe the pattern before you name it.',v:'correct'},
+        {l:'C',t:'Ask one more clarifying question about what "the bigger thing" in session means to her.',v:'wrong'},
+        {l:'D',t:'Wait — more material may emerge later in the session.',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The patient seeing the evidence is the essential step before the interpretation. Lay the pieces side by side. Give her a moment to notice what you\'ve noticed. Then — and only then — offer the connecting thread.'},
+        partial:{label:'Close, But Skips a Step',text:'Three data points across all three domains is strong. But the optimal move is still to present the evidence before drawing the conclusion — so the patient can arrive at the pattern with you rather than receive it from you.'},
+        wrong_C:{label:'Unnecessary',text:'You already have sufficient material. An additional clarifying question at this point delays the interpretation past the moment of readiness — and may signal to the patient that you\'re uncertain.'},
+        wrong_D:{label:'Misses the Window',text:'Waiting for more material when you have redundant evidence across all three domains misses the moment. The interpretation has legs now. Timing matters.'},
+      }
+    },
+    { qn:26, text:'You lay the three pieces side by side. What is the language of the interpretation?',
+      opts:[
+        {l:'A',t:'"You always put other people\'s needs before your own."',v:'wrong'},
+        {l:'B',t:'"I\'m hearing something across all three. At home — your partner\'s mother. At work — your boss\'s project. And just now, here, with me — the bigger thing. I wonder what you make of that."',v:'correct'},
+        {l:'C',t:'"It sounds like you have a compulsion to take care of others. Where does that come from?"',v:'wrong'},
+        {l:'D',t:'"There\'s a pattern here — you take on what others can\'t manage. Does that feel accurate?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'This puts the evidence in front of the patient and invites her to do the meaning-making. The conclusion arrives in her own words. The "I wonder what you make of that" deliberately withholds the interpretation and passes the move to her.'},
+        wrong_A:{label:'Closes the Exploration',text:'"You always" is a verdict, not an inquiry. It closes the exploration rather than opening it. The patient hears a judgment about a permanent trait — which produces either defensive agreement or defensive disagreement.'},
+        wrong_C:{label:'Interprets and Then Probes Origins',text:'This combines an interpretation ("compulsion to take care") with an immediate question about its origins. Too much at once. Offer the pattern first; let it land; then follow where she goes.'},
+        partial:{label:'Good, Slightly Closed',text:'"Does that feel accurate?" closes slightly toward a yes/no. The better move ("I wonder what you make of that") opens more fully and gives more room for the patient\'s own formulation to emerge.'},
+      }
+    },
+    { qn:27, text:'Elena pauses. Her eyes fill slightly. She says: <em>"I never thought of it as connected before."</em> What do you do now?',
+      opts:[
+        {l:'A',t:'Continue — there\'s more to say about where this pattern might come from.',v:'wrong'},
+        {l:'B',t:'Stop talking. Let the moment breathe.',v:'correct'},
+        {l:'C',t:'"Take your time. What\'s coming up for you?"',v:'partial'},
+        {l:'D',t:'"That\'s a significant realisation. It connects to what you said in session three about…"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The interpretation has landed. The most common error after a good interpretation is continuing to talk. The silence that follows is the patient processing. Filling it interrupts the work. Stop. Let it open.'},
+        partial:{label:'Gentle, But Interrupts',text:'"Take your time. What\'s coming up?" is a soft invitation that is better than talking — but even this may be premature. Give the silence more room before offering a question.'},
+        wrong_A:{label:'Talks Over the Landing',text:'The moment has arrived. Continuing now is the therapist managing their own anxiety about the silence rather than holding the space. The patient needs time with what just happened.'},
+        wrong_D:{label:'Intellectualises',text:'Connecting this to prior session material at this moment pulls the patient out of the present experience and into a clinical narrative. The tears and the recognition need space, not elaboration.'},
+      }
+    },
+  ],
+  debrief:['Did the resident wait for sufficient material before interpreting?','What was the language of the interpretation?','Did it land? How could you tell?','What would have made it land better?'],
+},
+{
+  id:'s09', num:'Session 09', title:'Working in the Transference & Rupture Repair',
+  intro:'A 39-year-old teacher, fourteenth session. Two sessions ago you cancelled on short notice — he said it was fine. Today something is different: he\'s providing good material but with less energy than usual. Your task: notice, name, and stay with it.',
+  vignette:'James, 39, a teacher, settles into the session. He gives you a thoughtful update about the week. The content is good — insights, connections. But something is different. The quality of engagement is slightly flatter, slightly more careful. You cancelled his session two weeks ago on short notice. He said it was fine.',
+  questions:[
+    { qn:28, text:'You notice the flatness but James hasn\'t raised it. He\'s providing good material. What do you do?',
+      opts:[
+        {l:'A',t:'Continue with the material he\'s brought — he seems to be working well.',v:'wrong'},
+        {l:'B',t:'"I want to slow down for a moment. I\'m noticing something slightly different in the room today — a little less energy than usual. Am I picking that up accurately?"',v:'correct'},
+        {l:'C',t:'"I want to acknowledge that I cancelled on short notice two sessions ago. I\'m sorry about that."',v:'wrong'},
+        {l:'D',t:'"How are things between us — from your side?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Notices the shift, names it tentatively, and checks perception without pressing. "Am I picking that up accurately?" signals curiosity rather than accusation and gives the patient room to either confirm or correct.'},
+        wrong_A:{label:'Misses the Rupture',text:'The rupture you miss is the one that ends treatment. A patient who becomes more compliant and provides good material after a cancellation is not healing — they are managing you. Proceeding communicates that you can be managed.'},
+        wrong_C:{label:'Defensive Reassurance',text:'Opening with an apology centres your intent rather than his experience. He may hear: I want to feel better about what I did. The better move is to notice what\'s different before explaining what happened.'},
+        partial:{label:'Too Abstract',text:'"How are things between us?" is too open-ended and may feel like a trap. A patient who is managing you will simply report that things are fine. The observation about the energy in the room is more specific and harder to deflect.'},
+      }
+    },
+    { qn:29, text:'James says: <em>"No, I\'m fine. I think I\'m just tired — long week."</em> What do you do?',
+      opts:[
+        {l:'A',t:'Accept it — he seems fine and may genuinely be tired.',v:'wrong'},
+        {l:'B',t:'"Long week makes sense. I noticed something though, and I want to stay with it for a moment. I\'ve heard \'I\'m fine\' from you before, in moments where there was a little more."',v:'correct'},
+        {l:'C',t:'"I think you\'re not being fully honest with me."',v:'wrong'},
+        {l:'D',t:'"I wonder if the cancellation two weeks ago is still with you a little."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Doesn\'t accept the "I\'m fine" but doesn\'t press it either. Naming the pattern gently — "I\'ve heard that before, in moments where there was more" — creates space without forcing. Then wait.'},
+        wrong_A:{label:'Accepts the Management',text:'Accepting his framing closes the repair. He\'s managed you successfully, and the rupture is now buried under good-patient compliance. It will emerge elsewhere.'},
+        wrong_C:{label:'Accusatory',text:'"You\'re not being honest with me" shifts the frame from clinical curiosity to moral accusation. The patient is likely to defend further.'},
+        partial:{label:'Useful But Tells Rather Than Opens',text:'Naming the cancellation specifically is not wrong — it may be exactly right. But doing so names the cause before the patient has arrived at it. The better move creates space for him to find his own words.'},
+      }
+    },
+    { qn:30, text:'After a pause, James says: <em>"I told myself it was fine when you cancelled. But it bothered me more than I said."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"I\'m really glad you said that. It had nothing to do with you — it was a scheduling issue."',v:'wrong'},
+        {l:'B',t:'"Thank you for telling me. That matters. What was it like — sitting with that for two weeks?"',v:'correct'},
+        {l:'C',t:'"I appreciate that. I want to say again that I\'m sorry it happened."',v:'partial'},
+        {l:'D',t:'"That makes complete sense. Cancellations can feel like rejection."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The repair is happening. "Thank you for telling me" acknowledges the courage it took. Then: staying with what it was like — not explaining, not apologising, not moving on. The work is to remain with his experience.'},
+        wrong_A:{label:'Defensive Reassurance',text:'"It had nothing to do with you" centres your intent and dismisses his experience. He\'s just told you it did bother him. Explaining that it shouldn\'t closes the repair rather than completing it.'},
+        partial:{label:'Kind But Incomplete',text:'Apologising again is not wrong — but doing it immediately after he\'s opened up risks returning the focus to your management of the rupture rather than his experience of it. The better move stays with what it was like for him.'},
+        wrong_D:{label:'Normalises Prematurely',text:'"Cancellations can feel like rejection" provides a psychological frame before exploring the specific experience. What did it feel like to him? Let him name it first.'},
+      }
+    },
+  ],
+  debrief:['What were the cues that something was different?','Was the rupture brought into the here-and-now, or kept abstract?','Did the resident defensively reassure, or stay with the patient\'s experience?','What might the rupture have been carrying from the patient\'s history?'],
+},
+{
+  id:'s10', num:'Session 10', title:'Dream Work & Unconscious Communication',
+  intro:'A 29-year-old architect, sixteenth session, brings a dream: a beautiful drawing pinned at work, people admiring it, she was proud — then she noticed she was naked. She tried to cover herself and the drawing fell. Your task: work with the dream associatively. Resist decoding.',
+  vignette:'Yuki, 29, a junior architect, opens: <strong>"I had a dream I wanted to bring in. I had a beautiful drawing pinned up at work — people were admiring it, I was really proud — and then I noticed I was naked. I tried to cover myself and the drawing fell down."</strong> She looks at you, expectant.',
+  questions:[
+    { qn:31, text:'Yuki has told you the dream and is looking at you. What is your first move?',
+      opts:[
+        {l:'A',t:'"The nakedness likely represents vulnerability — exposure to others\' judgment."',v:'wrong'},
+        {l:'B',t:'"What comes to mind when you think about the drawing?"',v:'correct'},
+        {l:'C',t:'"Tell me more about the feeling in the dream when you realised you were naked."',v:'partial'},
+        {l:'D',t:'"Dreams often express things we can\'t access consciously. What do you think yours is saying?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Starts with one element and invites association — the simplest possible entry into associative dream work. The question is four words. The passivity is intentional: it keeps the therapist out of the interpretation and the patient in the meaning-making.'},
+        wrong_A:{label:'Symbolic Decoding',text:'"The nakedness represents vulnerability" tells the patient what the dream means. It takes the meaning from the patient and gives it to the therapist — even if accurate, the patient has been removed from the interpretive process.'},
+        partial:{label:'Good, But Skips an Element',text:'Asking about the feeling is excellent — emotional valence is often the most direct route to the dream\'s centre. But asking about the drawing first is slightly preferable: it starts at the beginning of the associative chain rather than leaping to the climactic moment.'},
+        wrong_D:{label:'Meta-Question',text:'Asking what the dream is "saying" invites the patient to interpret rather than associate. It positions the dream as a text with a message rather than an experience to be explored.'},
+      }
+    },
+    { qn:32, text:'Yuki associates: the drawing connects to a recent project she\'s proud of. The pride connects to a graduate school presentation. Then she pauses. What do you do?',
+      opts:[
+        {l:'A',t:'"What comes to mind about the graduate school presentation?"',v:'correct'},
+        {l:'B',t:'"I notice you\'ve moved from the drawing to graduate school — what connects them?"',v:'wrong'},
+        {l:'C',t:'"And the nakedness — what comes up when you think about that?"',v:'wrong'},
+        {l:'D',t:'"What was the feeling in that presentation?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Follow the association. The graduate school presentation has just appeared — this is the next element in the chain. The question is again minimal: "what comes to mind about…?" keeps the patient moving rather than the therapist directing.'},
+        wrong_B:{label:'Meta-Analysis',text:'Asking what connects them is an intellectual move — it invites the patient to analyse the chain rather than continue it. Better to follow the association where it leads than to stop and map it.'},
+        wrong_C:{label:'Jumps Ahead',text:'Moving to the nakedness skips the graduate school material that has just appeared. Each element in the chain may be a doorway; the one that\'s just opened deserves attention first.'},
+        partial:{label:'Good But Narrows',text:'Asking about the feeling is a useful move — but it narrows to one dimension before the full association has unfolded. "What comes to mind about the presentation?" is more open and may carry the feeling with it.'},
+      }
+    },
+    { qn:33, text:'The graduate school presentation leads to a comment her mother once made: "You\'re almost too much." There is a silence. What do you do?',
+      opts:[
+        {l:'A',t:'"Tell me more about what \'too much\' means."',v:'correct'},
+        {l:'B',t:'"I think the dream is about your fear that being seen is dangerous — that the minute you\'re noticed, you become too much and lose what you\'ve made."',v:'wrong'},
+        {l:'C',t:'"I wonder if your mother\'s voice appears more often than you realise."',v:'wrong'},
+        {l:'D',t:'"What were you feeling in the silence just now?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'"Too much" is dense with meaning. The minimal question — "tell me more" — opens it without direction. The patient can take it wherever it goes: her mother, the relationship, the drawing, the dream. This is the work, and it\'s arrived through her own associations.'},
+        wrong_B:{label:'Takes the Meaning',text:'This is the interpretation that wants to emerge — and it may be exactly right. But offering it now takes the meaning from the patient at the moment she\'s closest to arriving there herself. Wait.'},
+        wrong_C:{label:'Premature Relational Interpretation',text:'Noting that her mother\'s voice "appears often" may be true — but it\'s an observation about a pattern rather than a continuation of the associative chain. It moves away from the live material.'},
+        partial:{label:'Useful But Diverts',text:'Asking about the feeling in the silence is good affect-tracking. But the silence has followed "you\'re almost too much" — and that phrase deserves direct attention before we turn to the meta-experience of sitting with it.'},
+      }
+    },
+  ],
+  debrief:['What was the first question the resident asked about the dream?','Did the meaning come from the patient or from the therapist?','What associations were followed, and what was passed over?','How did the dream connect to the broader work?'],
+},
+{
+  id:'s11', num:'Session 11', title:'Affect Regulation & the Body in the Room',
+  intro:'A 47-year-old accountant, tenth session, describes visiting her chronically ill sister. Mid-description her voice catches and her eyes fill. She immediately apologises and offers to move on. Your task: stay with the affect. Do not reassure.',
+  vignette:'Linda, 47, an accountant, is describing a visit to her sister, who has a chronic progressive illness. She\'s matter-of-fact about the practical details. Then, mid-sentence, her voice catches. Her eyes fill. She looks down. <strong>"Sorry — I don\'t know where that came from. I\'m fine. Where were we?"</strong>',
+  questions:[
+    { qn:34, text:'Linda\'s voice has caught and she\'s apologised and tried to move on. What do you do?',
+      opts:[
+        {l:'A',t:'"Of course — take all the time you need. It\'s completely natural to feel emotional about this."',v:'wrong'},
+        {l:'B',t:'<em>(Quietly.)</em> "There\'s no rush. You don\'t have to put it away."',v:'correct'},
+        {l:'C',t:'"It sounds like this is harder than you let on."',v:'partial'},
+        {l:'D',t:'"Where did that come from? What were you feeling just then?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'You are doing something by doing almost nothing. The intervention is your steadiness. "You don\'t have to put it away" is permission to stay — it communicates that this is a place that can hold what she is about to feel. No explanation of why it\'s okay. Just permission to remain.'},
+        wrong_A:{label:'Reassurance',text:'"It\'s completely natural" provides a social script and closes the affective moment. The patient feels managed rather than held. Reassurance makes affect go away — which is what her apology was trying to do.'},
+        partial:{label:'Observational, Slightly Confrontational',text:'"Harder than you let on" names what\'s happening but with a slight edge — the phrase "than you let on" implies concealment. Better to create space than to name the concealment.'},
+        wrong_D:{label:'Too Inquisitive',text:'Asking two questions in rapid succession when someone is in tears is experienced as interrogative rather than holding. Let the moment open before you ask anything.'},
+      }
+    },
+    { qn:35, text:'Linda looks up. Her eyes are still wet. She says: <em>"I\'m just tired, I think."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"Of course — caring for someone who is ill is exhausting."',v:'wrong'},
+        {l:'B',t:'<em>(Holding the silence a moment more.)</em> "You don\'t have to explain it."',v:'correct'},
+        {l:'C',t:'"Maybe. What\'s the feeling like, sitting here right now?"',v:'partial'},
+        {l:'D',t:'"I notice you\'re working hard to get back to the surface."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'"You don\'t have to explain it" directly addresses the apology and the self-management. It says: your affect is not a problem that needs to be accounted for. In her history, affect has had to be justified. The therapy should be different.'},
+        wrong_A:{label:'Explains for Her',text:'"Caring for someone who is ill is exhausting" provides an explanation for her feeling — which takes the feeling away from her and gives it a label. Even if accurate, it moves away from the open space that\'s just been created.'},
+        partial:{label:'Good But Slightly Directive',text:'"What\'s the feeling like?" is a genuinely good question — it opens toward experience. But asking it before the explanation attempt has been fully met ("you don\'t have to explain it") may feel slightly pressuring.'},
+        wrong_D:{label:'Too Observational',text:'"Working hard to get back to the surface" may be accurate but at this moment feels more like an interpretation than a presence. It names what she\'s doing rather than staying with her while she does it.'},
+      }
+    },
+    { qn:36, text:'Linda sits quietly and then says: <em>"I think I\'m going to lose her."</em> This is what she hasn\'t been able to say. What do you do?',
+      opts:[
+        {l:'A',t:'"Tell me about her."',v:'correct'},
+        {l:'B',t:'"I\'m so sorry. That must be devastating."',v:'wrong'},
+        {l:'C',t:'<em>(Quietly.)</em> "Stay with that."',v:'correct'},
+        {l:'D',t:'"Have the doctors said how much time she has?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Either A or C works',text:'Option A turns immediately toward the person she is grieving — simple, specific, and present. Option C is two words that hold the moment without moving on. Both honour what has just arrived by staying in it rather than pivoting to information-gathering or empathy performance.'},
+        wrong_B:{label:'Empathy Performance',text:'"I\'m so sorry" is kind — and signals your distress about what she\'s said. The moment is about her grief, not about your response to it. Managing her feeling of what just emerged with comfort moves away from staying with her in it.'},
+        wrong_D:{label:'Exits the Room',text:'Asking about timelines moves immediately to practical and external questions — abandoning the interior moment that has just opened. What she needs is to be in the room with what she\'s said, not to explain the medical situation.'},
+      }
+    },
+  ],
+  debrief:['What did the resident\'s body do when the patient\'s affect rose?','Was the moment opened or closed?','What was the difference between reassurance and presence?','What did staying with the affect produce?'],
+},
+{
+  id:'s12', num:'Session 12', title:'Working with Personality Organisation — Splitting',
+  intro:'A 27-year-old restaurant server, fifth session. She opens by telling you you\'re the first therapist who has ever really understood her, and immediately launches into a contemptuous description of her previous therapist as "a total idiot." Your task: recognise the split. Hold both sides.',
+  vignette:'Ava, 27, a server, opens brightly: <strong>"I was thinking this week — you\'re the first therapist who actually gets me. Like, my last therapist? Total idiot. She just sat there and nodded. I don\'t know why it took me so long to find someone who actually helps."</strong>',
+  questions:[
+    { qn:37, text:'Ava has idealised you and contemptously devalued the previous therapist in the same breath. What is the first clinical move?',
+      opts:[
+        {l:'A',t:'"I\'m really glad the work has felt different. What did the other therapist miss?"',v:'wrong'},
+        {l:'B',t:'"I appreciate you saying that — and I want to pause on something. I notice you\'re describing her as a total idiot and me as the opposite. I\'m curious about what it\'s like for you when you see people that way."',v:'correct'},
+        {l:'C',t:'"I think you\'re splitting — seeing people as all good or all bad."',v:'wrong'},
+        {l:'D',t:'"How long did you see her for?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Names the structure without judging either side. "I notice" and "I\'m curious" signal observation rather than accusation. The question — what is it like to see people that way — opens the split as something to explore rather than a diagnosis to correct.'},
+        wrong_A:{label:'Joins the Idealization',text:'Accepting her frame and asking what the other therapist missed colludes with the devaluation. You have implicitly agreed she was an idiot. When you become the "all-bad" therapist — and you will — the split will have no floor.'},
+        wrong_C:{label:'Labels the Defense',text:'"You\'re splitting" is technically accurate and experienced as a verdict. The patient is likely to get briefly angry, then devalue you. The naming is correct; the word and tone are wrong.'},
+        wrong_D:{label:'Deflects',text:'Asking how long she saw the other therapist moves to the practical and away from the structure of what she\'s just said. The clinical opportunity is in the here-and-now presentation, not in the biographical details of the prior treatment.'},
+      }
+    },
+    { qn:38, text:'Ava pushes back: <em>"Are you saying I\'m wrong about her? She really was bad."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"I\'m not saying you\'re wrong about her. I\'m saying it\'s hard to feel mixed about anyone — and I think that\'s actually one of the things we\'re here to work on together."',v:'correct'},
+        {l:'B',t:'"You\'re right — I\'m sure she had real limitations. I just want to understand your experience of her."',v:'wrong'},
+        {l:'C',t:'"I have no way of knowing whether she was good or bad. I only know your experience."',v:'partial'},
+        {l:'D',t:'"I\'m not judging her. I\'m more interested in you."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Doesn\'t adjudicate whether the previous therapist was bad. Holds the observation without backing off. Repositions the pattern — "hard to feel mixed about anyone" — as the work of the treatment, which normalises it as something to be worked on rather than shamed.'},
+        wrong_B:{label:'Validates the Devaluation',text:'"She had real limitations" agrees with Ava\'s framing. This collapses you into the split — now you\'re both telling her the previous therapist was deficient. You\'ve joined the all-bad side.'},
+        partial:{label:'Honest But Sidesteps',text:'"I only know your experience" is accurate and non-defensive — but it doesn\'t do the work of holding the observation. The question of whether the previous therapist was bad is a deflection from the pattern itself.'},
+      }
+    },
+    { qn:39, text:'After several more exchanges, Ava says: <em>"I guess she wasn\'t all bad. I don\'t know."</em> How do you receive this?',
+      opts:[
+        {l:'A',t:'"Good — I think that\'s more accurate."',v:'wrong'},
+        {l:'B',t:'"The \'I don\'t know\' is actually the most important thing you\'ve said today."',v:'correct'},
+        {l:'C',t:'"Mixed feelings are healthy — most people are more complex than all-good or all-bad."',v:'wrong'},
+        {l:'D',t:'"What does \'I don\'t know\' feel like?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The "I don\'t know" is the clinical goal: ambivalence has appeared. Naming it as the most important moment honours the shift without overdoing it. The patient has just held two contradictory feelings about the same person — possibly for the first time.'},
+        wrong_A:{label:'Triumphant',text:'"Good — that\'s more accurate" makes this about being right. It communicates that the patient was wrong before and is now correct. This reintroduces evaluation into a moment that needs to stay open.'},
+        wrong_C:{label:'Psychoeducation',text:'Explaining that "mixed feelings are healthy" turns the moment into a lecture. The patient has just arrived at something genuinely new — the response should hold that, not explain it.'},
+        partial:{label:'Good',text:'"What does \'I don\'t know\' feel like?" follows the experience and is a genuinely good move. Option B is slightly preferable because naming the significance of the moment itself communicates something important about what just happened.'},
+      }
+    },
+  ],
+  debrief:['Did the resident recognise the split?','How did they hold both sides — what language?','What did they do when the patient pushed back?','What was the patient communicating through the split?'],
+},
+{
+  id:'s13', num:'Session 13', title:'Termination — Process & Technique',
+  intro:'A 56-year-old retired teacher in the third-to-last session of an 18-month treatment. He mentions briskly that he\'s in good shape and ready to be done. Your task: notice the briskness. Raise the ending gently. Stay with the denial of feeling without forcing emotion.',
+  vignette:'Philip, 56, a retired teacher, settles in and gives you a brisk update: things are good, sleep is better, the retirement adjustment is going well. Then: <strong>"Actually — I think I\'m in pretty good shape. I\'m probably about done, right? Two more sessions after today?"</strong>',
+  questions:[
+    { qn:40, text:'Philip has briskly announced he\'s ready to be done. What do you do?',
+      opts:[
+        {l:'A',t:'"It sounds like you\'ve made real progress. Let\'s use these last sessions to review what you\'ve built."',v:'wrong'},
+        {l:'B',t:'"I want to spend some time with what it\'s actually like to be sitting here knowing we\'re coming to the end — not the summary, but the feeling."',v:'correct'},
+        {l:'C',t:'"I notice you said that pretty quickly. What\'s underneath the readiness?"',v:'partial'},
+        {l:'D',t:'"Two more sessions after today, yes. Is there anything you want to make sure we cover?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Names the ending as its own subject while distinguishing between the summary (what was accomplished) and the feeling (what it\'s like to be ending). This opens the termination work without pressing — the patient can choose what to bring to that question.'},
+        wrong_A:{label:'Accepts the Frame',text:'Agreeing to review what was built accepts the patient\'s defensive framing of termination as a competency audit rather than a relational process. The work of ending — including whatever is being warded off — gets bypassed.'},
+        partial:{label:'Good, Slightly Confrontational',text:'"What\'s underneath the readiness?" is curious — but slightly implies the readiness is a defense. The better move names the ending as worth examining without suggesting what should be underneath it.'},
+        wrong_D:{label:'Administrative',text:'Confirming the session count and asking about topics to cover is practical and appropriate — but it does nothing to open the termination process. Use it later; not as the primary response to the briskness.'},
+      }
+    },
+    { qn:41, text:'Philip deflects: <em>"I mean — I feel good. I think I\'ve done the work. Isn\'t that the point?"</em> What do you do?',
+      opts:[
+        {l:'A',t:'"Yes — and I don\'t want to take that away. I also don\'t want us to miss whatever else might be here alongside the readiness."',v:'correct'},
+        {l:'B',t:'"I think there might be more. You haven\'t talked about how you feel about leaving."',v:'wrong'},
+        {l:'C',t:'"You\'re right — you have done the work. I just want to sit with the ending for a moment."',v:'partial'},
+        {l:'D',t:'"Of course. Tell me what feels different now compared to when we started."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Validates the readiness AND holds space for more. "I don\'t want to take that away" signals that his sense of progress is real and respected. "I also don\'t want us to miss" opens the door without pushing him through it.'},
+        wrong_B:{label:'Points to the Gap',text:'Telling him he hasn\'t talked about leaving implies he\'s withholding something. It\'s slightly accusatory — and may produce compliance ("okay, let me try to feel something") rather than genuine exploration.'},
+        partial:{label:'Good But Passive',text:'Agreeing he\'s done the work before asking to sit with the ending is a slightly limp version of Option A. It yields the ground before finding it — "I just want to" is weaker than "I also don\'t want us to miss."'},
+        wrong_D:{label:'Moves to Review',text:'Asking what feels different now compared to then is a legitimate termination-review question — but it\'s an intellectual exercise rather than an affective one. The briskness hasn\'t been addressed.'},
+      }
+    },
+    { qn:42, text:'Philip becomes slightly quieter and says: <em>"I find myself thinking about it during the week. I don\'t know what I\'ll do on Wednesdays."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"That\'s a lovely thing to say. This has meant a lot to me too."',v:'wrong'},
+        {l:'B',t:'"Stay with that. What comes up when you think about Wednesdays?"',v:'correct'},
+        {l:'C',t:'"There are ways to maintain what you\'ve built — people continue in all kinds of ways after therapy."',v:'wrong'},
+        {l:'D',t:'"What does not knowing what to do on Wednesdays mean to you?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'He has arrived at the feeling on his own — which is more therapeutic than being pressed into it. "Stay with that" communicates: don\'t rush past this. The question follows directly into what he\'s just opened. The work of mourning is beginning.'},
+        wrong_A:{label:'Reciprocates',text:'Sharing that this has meant a lot to you turns the ending into a mutual appreciation moment. Your feelings about the ending are real — but this is his therapy, and this moment belongs to his process of ending.'},
+        wrong_C:{label:'Problem-Solves',text:'Suggesting ways to maintain gains moves immediately to the practical future and away from the affective present. The loss hasn\'t been felt yet — it\'s too soon to address how to manage without the therapy.'},
+        partial:{label:'Good',text:'"What does that mean to you?" is a reasonable deepening question. "Stay with that" followed by "what comes up?" is slightly preferable because it first signals permission to remain with the experience before asking to analyse it.'},
+      }
+    },
+  ],
+  debrief:['Did the resident raise termination as a topic in its own right?','How was the denial of feeling handled?','Was there room for grief without forcing it?','What might be repeating from earlier losses in the patient\'s life?'],
+},
+{
+  id:'s14', num:'Session 14', title:'Integration & the Therapist\'s Ongoing Development',
+  intro:'Capstone session. A 44-year-old internist, twentieth session. Three clinical opportunities in one: a shift in opening tone, a moment of affect, and a parapraxis late in the session. Your task: integrate multiple techniques. Hold the through-line.',
+  vignette:'Dr. Anita Sharma, 44, an internist, opens: <strong>"It was a good week, mostly."</strong> Mid-session she describes her teenage daughter\'s words: "You\'re never really here, even when you\'re home." She becomes slightly emotional. Late in the session she says: <strong>"My mother — sorry, my daughter — laughed it off afterwards."</strong>',
+  questions:[
+    { qn:43, text:'"It was a good week, mostly." What do you do with the word "mostly"?',
+      opts:[
+        {l:'A',t:'Let it pass — she\'ll bring it up if it\'s important.',v:'wrong'},
+        {l:'B',t:'"Mostly. What\'s the part that wasn\'t?"',v:'correct'},
+        {l:'C',t:'"How was the week?"',v:'wrong'},
+        {l:'D',t:'"You sound slightly less energised than usual today. What\'s going on?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Single-word tracking. "Mostly" is the clinical signal — the part of the sentence that carries the weight. Two words open it without directing it. The therapist\'s job is to notice what the patient almost didn\'t say.'},
+        wrong_A:{label:'Misses the Signal',text:'Letting "mostly" pass is how sessions stay comfortable and unproductive. The important material almost always arrives sideways — in qualifications, parenthetical remarks, and words like "mostly."'},
+        partial:{label:'Good but Broader',text:'Noting a change in energy is also valid tracking — but it\'s a more sweeping observation about the whole session rather than catching the specific word that carried the clinical weight.'},
+        wrong_C:{label:'Generic',text:'"How was the week?" is a standard opener that misses the specific signal already given. The patient has already told you how the week was — mostly good. The question to pursue is the "mostly."'},
+      }
+    },
+    { qn:44, text:'Mid-session, Anita describes her daughter\'s words: "You\'re never really here, even when you\'re home." She becomes slightly emotional as she tells it. What do you do?',
+      opts:[
+        {l:'A',t:'"That must be painful to hear from your daughter."',v:'wrong'},
+        {l:'B',t:'"Stay with what\'s coming up for you as you say that."',v:'correct'},
+        {l:'C',t:'"How did you respond to her?"',v:'wrong'},
+        {l:'D',t:'"I wonder what your daughter is picking up on that you haven\'t been able to name yourself."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Four words. No interpretation, no empathy performance, no direction. "As you say that" anchors the intervention in the present moment — her experience right now, not what happened at home. The economy of the model intervention is itself the lesson.'},
+        wrong_A:{label:'Names for Her',text:'"That must be painful" tells her what she\'s feeling. She may feel something more complex — shame, recognition, defensiveness. Naming the feeling before she does forecloses the exploration.'},
+        wrong_C:{label:'Moves to the Practical',text:'Asking how she responded exits the affective moment and turns toward the event rather than her experience of it. The material is in what\'s coming up for her now, not in the behavioural account.'},
+        partial:{label:'Interesting but Premature',text:'The interpretation — that the daughter is picking up on something Anita can\'t name — may be exactly right. But offered when the affect is still rising, it redirects from the feeling into the cognitive. Stay with the affect first.'},
+      }
+    },
+    { qn:45, text:'Late in the session, Anita says: "My mother — sorry, my daughter — laughed it off afterwards." How do you work with the slip?',
+      opts:[
+        {l:'A',t:'Let it pass — slips are common and don\'t always mean anything.',v:'wrong'},
+        {l:'B',t:'"I\'m going to hold that for a moment — my mother. What comes to mind?"',v:'correct'},
+        {l:'C',t:'"You just said \'my mother\' when you meant your daughter. What do you make of that?"',v:'wrong'},
+        {l:'D',t:'"It sounds like your mother is somewhere in this session."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Holds the slip with economy: "I\'m going to hold that" signals it matters without accusing. "My mother" — repeating just the word — and then "what comes to mind?" invites association rather than explanation. The session has been circling this; the slip crystallises it.'},
+        wrong_A:{label:'Misses the Material',text:'Slips of the tongue are one of the clearest windows into what is working in the session. Missing it colludes with the patient\'s correction ("sorry") and endorses the view that what emerged was simply an error.'},
+        wrong_C:{label:'Asks for Explanation',text:'"What do you make of that?" invites the patient to explain the slip rather than associate to it. The patient is likely to produce a rationalization. "What comes to mind?" is more open and more likely to access the material.'},
+        partial:{label:'Good But Interprets',text:'"Your mother is somewhere in this session" names the observation and may feel insightful — but it skips the patient\'s own process of arriving at what the mother means. The associative question is preferable.'},
+      }
+    },
+  ],
+  debrief:['How many techniques did the resident integrate?','What was the through-line — the central conflict the session circled?','Where did the session deepen, and what allowed it?','What do you take from this capstone into your ongoing development?'],
+},
+{
+  id:'s15', num:'Session 15', title:'Psychodynamic Psychopharmacology',
+  intro:'A 38-year-old accountant presents for a first medication visit. She is articulate, engaged, and explicitly sceptical: "I don\'t really believe in medications for this kind of thing, but my therapist thought I should at least talk to someone." Her mother became "a different person" on antidepressants.',
+  vignette:'Diane, 38, an accountant, sits across from you for her first medication evaluation. She begins: <strong>"I want to be upfront — I don\'t really believe in medications for this kind of thing. My therapist said I should come, so here I am. My mum changed completely on antidepressants. My brother got dependent on benzos."</strong>',
+  questions:[
+    { qn:46, text:'Diane has opened with explicit scepticism and family history. What is the best first move?',
+      opts:[
+        {l:'A',t:'Explain how modern antidepressants work and distinguish them from benzodiazepines.',v:'wrong'},
+        {l:'B',t:'"Tell me more about what happened to your mother on the medication."',v:'correct'},
+        {l:'C',t:'"That\'s a completely understandable concern. Many patients feel that way at first."',v:'wrong'},
+        {l:'D',t:'"Given your concerns, I want to be really transparent about what the evidence actually shows."',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Before promoting, prescribing, or even discussing medication — explore what medications mean to this person. Her mother "becoming a different person" is not a data point to be corrected; it is a representation of what medication might mean for her. This is the clinical material.'},
+        wrong_A:{label:'Educates Prematurely',text:'Explaining the pharmacology before understanding her ambivalence puts you in the position of salesperson. Her concerns are not based on ignorance — they are based on lived experience. Education without exploration will not move them.'},
+        wrong_C:{label:'Normalises and Moves On',text:'"Many patients feel that way at first" categorises her concern and implicitly suggests it will be overcome. It treats the scepticism as an obstacle rather than as information about what prescribing will mean to her.'},
+        partial:{label:'Reasonable',text:'Committing to transparency is good — it positions you as a collaborative partner rather than an authority. But leading with evidence before exploring her meaning risks making the visit a debate rather than a consultation.'},
+      }
+    },
+    { qn:47, text:'Diane describes her mother: "She just wasn\'t herself — she went flat. Like something was taken from her." What does this tell you, and how do you use it?',
+      opts:[
+        {l:'A',t:'"That\'s actually a known side effect — emotional blunting — and it\'s something we specifically watch for and can adjust."',v:'wrong'},
+        {l:'B',t:'"What does \'herself\' mean to you? What would you be losing if something like that happened to you?"',v:'correct'},
+        {l:'C',t:'"What do you imagine would be taken from you?"',v:'partial'},
+        {l:'D',t:'"I hear your worry. I want to reassure you that we\'d work together to avoid that."',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Two questions that do everything: they explore what "herself" means (a map of her sense of identity and what she values in it) and what she fears losing (the specific meaning medication carries for her). This is psychodynamic prescribing.'},
+        wrong_A:{label:'Reassures Pharmacologically',text:'Naming emotional blunting as a known side effect that can be managed may be accurate — but it moves immediately to pharmacology before understanding the meaning of the fear. The concern is not only medical; it\'s about identity.'},
+        partial:{label:'Good, But Half the Question',text:'"What would you be losing?" follows the fear — which is the right direction. "What does \'herself\' mean to you?" is the prior question that gives the fear its full context.'},
+        wrong_D:{label:'Promises',text:'Reassuring her that you\'d work to avoid it makes a promise you can\'t fully keep. It also signals that her concern is primarily practical — manageable — when it may be much more than that.'},
+      }
+    },
+    { qn:48, text:'After exploration, Diane says: <em>"I guess I\'m worried that if I start feeling better, it won\'t be me — it\'ll be the medication."</em> How do you respond?',
+      opts:[
+        {l:'A',t:'"That\'s an important thing to have thought about. What would \'you feeling better\' look like — what would be different?"',v:'correct'},
+        {l:'B',t:'"That\'s a common question — most people find that medication helps them be more fully themselves, not less."',v:'wrong'},
+        {l:'C',t:'"That question — about what\'s you and what\'s the medication — is one we can explore together over time."',v:'partial'},
+        {l:'D',t:'"What if feeling better is just more of you, rather than less?"',v:'wrong'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Takes her concern seriously and immediately turns it into a clinical inquiry: what would better look like? This question — before any prescription — maps the terrain of what treatment would actually mean to her and what success would look like from her own vantage point.'},
+        wrong_B:{label:'Normalises and Counters',text:'"Most people find they\'re more fully themselves" may be true but it dismisses her concern by replacing it with the average experience. Her concern deserves its own exploration, not a statistical counter.'},
+        partial:{label:'Containing But Deferred',text:'Framing the question as something to explore over time is reasonable — it\'s honest and collaborative. But it defers the exploration rather than starting it. The question is available right now.'},
+        wrong_D:{label:'Reframes Without Asking',text:'"What if feeling better is more of you?" is a reframe that asks her to adopt a different belief without earning it. It\'s clever but moves away from her experience toward your preferred account of what medication does.'},
+      }
+    },
+  ],
+  debrief:['Did the resident ask about what medication means to this patient — not just what it does?','Was ambivalence explored or bypassed?','Did the resident support the patient\'s autonomy or attempt to persuade?','What would the patient need to hear to be able to make a genuine informed decision?'],
+},
+{
+  id:'s16', num:'Session 16', title:'Psychodynamic Approaches in the Hospital Setting',
+  intro:'A 24-year-old woman admitted overnight after cutting her arms in her college dormitory bathroom. She is medically cleared and says she is "fine now." Nursing staff are split. Two prior ED visits in 18 months. Your task: go beyond risk stratification. Explore what the act communicated.',
+  vignette:'Chloe, 24, a college student, is sitting in a hospital room in a gown. She looks tired but pleasant. She says: <strong>"I\'m fine now. I don\'t know why they kept me — I just needed to calm down."</strong> Her arms are bandaged. The nurse who triaged her pulled you aside to say she found it "manipulative." Another nurse stayed with her all night.',
+  questions:[
+    { qn:49, text:'Chloe says she\'s fine and doesn\'t understand why she was kept. What do you do?',
+      opts:[
+        {l:'A',t:'Accept her reassurance and proceed to a structured risk assessment.',v:'wrong'},
+        {l:'B',t:'"I\'m glad you\'re feeling calmer. I want to understand what happened last night — not the risk side of it, but what it was like for you before, and what you were hoping would happen."',v:'correct'},
+        {l:'C',t:'"Can you tell me on a scale of 1–10 how safe you feel right now?"',v:'wrong'},
+        {l:'D',t:'"I hear that you\'re okay now. But the nursing staff are worried — can you help me understand why?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'Opens the conversation beyond risk stratification to explore the meaning of the act: what led to it, and crucially, what she was hoping would happen. "What were you hoping would happen?" is one of the most important questions in post-self-harm assessment — it accesses the fantasy that drove the act.'},
+        wrong_A:{label:'Accepts the Reassurance',text:'Accepting "I\'m fine" and moving to a structured risk tool closes the window. The period after self-harm is one where defences are weaker than usual. Using it only for risk categorisation wastes the clinical opportunity.'},
+        wrong_C:{label:'Numerical Deflection',text:'A safety scale is a risk tool that produces a number, not a conversation. It can be answered without genuine engagement and signals that you\'re primarily interested in categorisation rather than understanding.'},
+        partial:{label:'Reasonable But Patient-Led',text:'"Why is the nursing staff worried?" puts the burden of explanation on her and positions the nursing concern rather than her experience at the centre. The better question moves directly to her interior experience of the night.'},
+      }
+    },
+    { qn:50, text:'You notice you feel slightly irritated with Chloe — a pull to end the interview. What do you do with this?',
+      opts:[
+        {l:'A',t:'Recognise this as potentially projective identification — Chloe\'s self-contempt may be in the room — and use it as data rather than acting on it.',v:'correct'},
+        {l:'B',t:'Note it but set it aside — your feelings aren\'t relevant here.',v:'wrong'},
+        {l:'C',t:'Mention it: "I notice I\'m feeling a little impatient — I wonder if that\'s something you recognise from other relationships."',v:'wrong'},
+        {l:'D',t:'Ask yourself whether your irritation might reflect exhaustion or other factors outside the session.',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'The irritation is almost certainly not your own — it is what Chloe has projected into the room. It may be her own self-contempt; it may be what she expects caregivers to feel. Identifying it as data — rather than acting on it by shortening the interview — is the clinical move.'},
+        wrong_B:{label:'Dismisses the Data',text:'The pre-Heimann view. Your reactions in the room are the most specific information you have about this patient\'s relational world. Setting them aside removes an irreplaceable clinical signal.'},
+        wrong_C:{label:'Discloses Prematurely',text:'Disclosing irritation to a patient who has just self-harmed and is saying "I\'m fine" is likely to confirm her worst fear — that she is a burden to caregivers. This is not the moment for self-disclosure.'},
+        partial:{label:'Reasonable Self-Reflection',text:'Checking for external factors is good reflective practice — it prevents false attribution. But in this context, the irritation is almost certainly relational data rather than fatigue. The next step is to use it to understand her, not just to rule out your own state.'},
+      }
+    },
+    { qn:51, text:'Chloe becomes slightly more open and says: <em>"I thought if I did it, things would just — stop. Not permanently. Just for a second."</em> What do you do?',
+      opts:[
+        {l:'A',t:'"That sounds like suicidal ideation — I need to ask you directly about whether you were thinking about dying."',v:'wrong'},
+        {l:'B',t:'"Stay with that for a moment. What would \'things stopping\' have looked like?"',v:'correct'},
+        {l:'C',t:'"So it wasn\'t about wanting to die — more about wanting relief from what was happening?"',v:'partial'},
+        {l:'D',t:'"What was so overwhelming that you needed things to stop?"',v:'partial'},
+      ],
+      fb:{
+        correct:{label:'Best Response',text:'"What would \'things stopping\' have looked like?" follows the fantasy rather than categorising it. This is how you access the unconscious meaning of the act — not by risk-stratifying the phrase but by asking the patient to elaborate on what she was imagining. The image she produces will be clinically rich.'},
+        wrong_A:{label:'Categorises and Closes',text:'Identifying it as suicidal ideation and moving to a direct lethality question may be necessary at some point — but doing it immediately at this moment closes the window she\'s just opened. The clinical opportunity is in the fantasy itself.'},
+        partial:{label:'Both Reasonable',text:'Option C reflects her statement back accurately and non-alarmingly — it may help her continue. Option D opens the precipitant — also valuable. Both are workable. Option B is preferable because it stays inside her fantasy rather than reflecting it back or pivoting to its cause.'},
+      }
+    },
+  ],
+  debrief:['Did the resident ask about the fantasy behind the act — who she imagined would find her, what she hoped would happen?','Did the resident notice their own affective response to "I\'m fine" and work with it rather than against it?','Did the resident avoid being pulled into either dismissal or rescue?','What would a psychodynamic formulation of this patient look like?'],
+},
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+const state = {};
+SESSIONS.forEach(s => s.questions.forEach(q => { state[s.id + '_q' + q.qn] = null; }));
+const TOTAL = Object.keys(state).length;
+
+// ─── BUILD UI ────────────────────────────────────────────────────────────────
+function build() {
+  const nav = document.getElementById('navList');
+  const main = document.getElementById('mainContent');
+
+  SESSIONS.forEach((s, si) => {
+    // Nav item
+    const li = document.createElement('li');
+    li.className = 'nav-item';
+    li.id = 'nav-' + s.id;
+    li.innerHTML = `<button onclick="show('${s.id}')" id="nbtn-${s.id}"><span class="nav-num">${s.id.replace('s0','').replace('s','')}</span>${s.title}</button>`;
+    nav.appendChild(li);
+
+    // Panel
+    const panel = document.createElement('div');
+    panel.className = 'session-panel' + (si === 0 ? ' active' : '');
+    panel.id = 'panel-' + s.id;
+
+    let qHtml = '';
+    s.questions.forEach((q, qi) => {
+      const optsHtml = q.opts.map(o =>
+        `<button class="opt" id="opt-${s.id}-q${q.qn}-${o.l}" onclick="answer('${s.id}','${q.qn}','${o.l}','${o.v}')">
+          <span class="opt-letter">${o.l}</span>
+          <span class="opt-text">${o.t}</span>
+        </button>`
+      ).join('');
+      qHtml += `
+        ${qi > 0 ? '<hr class="divider">' : ''}
+        <div class="qblock" id="qblock-${s.id}-q${q.qn}">
+          <div class="qlabel">Question ${q.qn}</div>
+          <div class="qtext"><span class="qnum">${q.qn}</span><span>${q.text}</span></div>
+          <div class="opts">${optsHtml}</div>
+          <div class="feedback" id="fb-${s.id}-q${q.qn}"></div>
+        </div>`;
     });
 
-    // Show feedback
-    let fbData;
-    if (type === 'correct') fbData = fb.correct;
-    else if (type === 'partial') fbData = fb.partial;
-    else fbData = fb['wrong_' + letter] || fb['wrong_A'] || fb.correct;
+    const refHtml = s.debrief.map(d => `<li>${d}</li>`).join('');
 
-    const cls = type === 'correct' ? 'correct' : (type === 'partial' ? 'partial' : 'wrong');
-    panel.className = 'feedback-panel ' + cls;
-    panel.innerHTML = `<div class="feedback-icon">${fbData.label}</div><div class="feedback-text">${fbData.text}</div>`;
+    panel.innerHTML = `
+      <div class="session-header">
+        <div class="session-tag">${s.num}</div>
+        <h2>${s.title}</h2>
+        <p class="session-intro">${s.intro}</p>
+      </div>
+      <div class="vignette-card">
+        <div class="card-label">Clinical Vignette</div>
+        <p class="vignette-text">${s.vignette}</p>
+      </div>
+      ${qHtml}
+      <div class="score-box" id="score-${s.id}">
+        <div class="score-big" id="score-num-${s.id}">—</div>
+        <div class="score-sub">${s.num} Score</div>
+        <div class="score-msg" id="score-msg-${s.id}"></div>
+        <button class="reset-btn" onclick="resetSession('${s.id}')">Restart this session</button>
+      </div>
+      <div class="reflection">
+        <div class="ref-label">Facilitator Debrief</div>
+        <div class="ref-title">Questions for Discussion</div>
+        <ul class="ref-list">${refHtml}</ul>
+      </div>`;
 
-    updateProgress();
-    checkSessionComplete(qid.startsWith('s1') ? 1 : 2);
-  }
+    main.appendChild(panel);
+  });
 
-  function getOptionMap(qid) {
-    // reconstruct from feedback keys
-    const fb = feedback[qid];
-    const map = {};
-    // correct
-    // we need to look at the HTML buttons to map letters to types
-    // Instead let's store the map inline:
-    const maps = {
-      s1q1: { A:'wrong', B:'wrong', C:'correct', D:'wrong' },
-      s1q2: { A:'wrong', B:'correct', C:'wrong', D:'partial' },
-      s1q3: { A:'correct', B:'wrong', C:'wrong', D:'partial' },
-      s2q1: { A:'wrong', B:'wrong', C:'correct', D:'wrong' },
-      s2q2: { A:'wrong', B:'partial', C:'correct', D:'wrong' },
-      s2q3: { A:'wrong', B:'wrong', C:'correct', D:'partial' },
-    };
-    return maps[qid] || {};
-  }
+  // activate first nav
+  document.getElementById('nbtn-' + SESSIONS[0].id).classList.add('active');
+  updateProgress();
+}
 
-  function updateProgress() {
-    const total = Object.keys(state).length;
-    const answered = Object.values(state).filter(v => v !== null).length;
-    const pct = (answered / total) * 100;
-    document.getElementById('globalProgress').style.width = pct + '%';
-    document.getElementById('globalProgressLabel').textContent = `${answered} of ${total} questions answered`;
-  }
+function show(sid) {
+  document.querySelectorAll('.session-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item button').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + sid).classList.add('active');
+  document.getElementById('nbtn-' + sid).classList.add('active');
+  window.scrollTo({top: document.querySelector('.main').offsetTop - 20, behavior:'smooth'});
+}
 
-  function checkSessionComplete(n) {
-    const prefix = 's' + n;
-    const keys = Object.keys(state).filter(k => k.startsWith(prefix));
-    const done = keys.every(k => state[k] !== null);
-    if (!done) return;
+function answer(sid, qn, letter, verdict) {
+  const key = sid + '_q' + qn;
+  if (state[key] !== null) return;
+  state[key] = verdict;
 
-    const correct = keys.filter(k => state[k] === 'correct').length;
-    const partial = keys.filter(k => state[k] === 'partial').length;
-    const total = keys.length;
-    const score = Math.round(((correct + partial * 0.5) / total) * 100);
+  const sess = SESSIONS.find(s => s.id === sid);
+  const q = sess.questions.find(q => q.qn === parseInt(qn));
+  const fb = q.fb;
 
-    const scoreEl = document.getElementById('score-s' + n);
-    const numEl = document.getElementById('score-s' + n + '-num');
-    const msgEl = document.getElementById('score-s' + n + '-msg');
+  // Disable all opts in this question
+  const qblock = document.getElementById('qblock-' + sid + '-q' + qn);
+  qblock.querySelectorAll('.opt').forEach(btn => {
+    btn.disabled = true;
+    const l = btn.querySelector('.opt-letter').textContent;
+    if (l === letter) {
+      btn.classList.add(verdict === 'correct' ? 'sel-correct' : 'sel-wrong');
+    }
+    // Reveal correct if wrong or partial
+    if (verdict !== 'correct') {
+      const thisOpt = q.opts.find(o => o.l === l);
+      if (thisOpt && thisOpt.v === 'correct') btn.classList.add('reveal-correct');
+    }
+  });
 
-    numEl.textContent = score + '%';
-    let msg;
-    if (score === 100) msg = 'Excellent technique — you held the frame, tolerated uncertainty, and followed the patient\'s lead throughout. Revisit the facilitator questions to deepen the learning.';
-    else if (score >= 67) msg = 'Good clinical instincts. Review the questions where you chose a partial or incorrect response — those moments often contain the most to learn.';
-    else if (score >= 34) msg = 'Some strong moments alongside areas for development. The feedback for each question can help you articulate what the better responses are doing differently.';
-    else msg = 'This material takes time and repetition to internalise. Read through the feedback carefully and consider what assumptions guided your choices.';
+  // Show feedback
+  let fbData;
+  if (verdict === 'correct') fbData = fb.correct;
+  else if (verdict === 'partial') fbData = fb.partial || fb['wrong_' + letter] || fb.correct;
+  else fbData = fb['wrong_' + letter] || fb.partial || fb.correct;
 
-    msgEl.textContent = msg;
-    scoreEl.classList.add('visible');
-  }
+  const fbEl = document.getElementById('fb-' + sid + '-q' + qn);
+  const cls = verdict === 'correct' ? 'correct' : verdict === 'partial' ? 'partial' : 'wrong';
+  fbEl.className = 'feedback ' + cls;
+  fbEl.innerHTML = `<div class="fb-icon">${fbData.label}</div><div class="fb-text">${fbData.text}</div>`;
 
-  function switchSession(n) {
-    document.querySelectorAll('.session-section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.session-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('session-' + n).classList.add('active');
-    document.querySelectorAll('.session-tab')[n - 1].classList.add('active');
-  }
+  updateProgress();
+  checkComplete(sid);
+}
 
-  function resetSession(n) {
-    const prefix = 's' + n;
-    const keys = Object.keys(state).filter(k => k.startsWith(prefix));
-    keys.forEach(k => { state[k] = null; });
+function checkComplete(sid) {
+  const sess = SESSIONS.find(s => s.id === sid);
+  const keys = sess.questions.map(q => sid + '_q' + q.qn);
+  if (!keys.every(k => state[k] !== null)) return;
 
-    // Reset UI
-    document.getElementById('session-' + n).querySelectorAll('.option-btn').forEach(btn => {
-      btn.disabled = false;
-      btn.classList.remove('selected-correct', 'selected-wrong', 'revealed-correct');
-    });
-    document.getElementById('session-' + n).querySelectorAll('.feedback-panel').forEach(p => {
-      p.className = 'feedback-panel';
-      p.innerHTML = '';
-    });
-    document.getElementById('score-s' + n).classList.remove('visible');
+  const correct = keys.filter(k => state[k] === 'correct').length;
+  const partial = keys.filter(k => state[k] === 'partial').length;
+  const total = keys.length;
+  const score = Math.round(((correct + partial * 0.5) / total) * 100);
 
-    updateProgress();
-  }
+  document.getElementById('score-num-' + sid).textContent = score + '%';
+  let msg;
+  if (score === 100) msg = 'Excellent throughout — the frame was held, the material was followed, and the patient was kept at the centre. Review the debrief questions to deepen the learning.';
+  else if (score >= 67) msg = 'Strong clinical instincts on display. The questions where you chose the partial or wrong response often contain the most to learn — return to the rationale carefully.';
+  else if (score >= 34) msg = 'Some strong moments alongside areas to develop. The feedback explains what the better responses are doing differently — read it slowly.';
+  else msg = 'This material takes time and repetition. Reading the feedback for each question carefully — especially the wrong choices — will clarify the clinical logic.';
+
+  document.getElementById('score-msg-' + sid).textContent = msg;
+  document.getElementById('score-' + sid).classList.add('visible');
+
+  // Mark nav complete
+  document.getElementById('nbtn-' + sid).classList.add('completed');
+}
+
+function resetSession(sid) {
+  const sess = SESSIONS.find(s => s.id === sid);
+  sess.questions.forEach(q => { state[sid + '_q' + q.qn] = null; });
+
+  const panel = document.getElementById('panel-' + sid);
+  panel.querySelectorAll('.opt').forEach(b => {
+    b.disabled = false;
+    b.classList.remove('sel-correct','sel-wrong','reveal-correct');
+  });
+  panel.querySelectorAll('.feedback').forEach(el => {
+    el.className = 'feedback';
+    el.innerHTML = '';
+  });
+  document.getElementById('score-' + sid).classList.remove('visible');
+  document.getElementById('nbtn-' + sid).classList.remove('completed');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = Object.values(state).filter(v => v !== null).length;
+  const pct = (answered / TOTAL) * 100;
+  document.getElementById('gProg').style.width = pct + '%';
+  document.getElementById('gLabel').textContent = answered + ' of ' + TOTAL + ' questions answered';
+}
+
+build();
 </script>
 </body>
 </html>
