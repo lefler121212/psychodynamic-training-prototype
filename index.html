@@ -116,10 +116,49 @@ h2{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3.5vw,30px);font-
   .nav-item button{padding:6px 10px;border-left:none;border-bottom:2px solid transparent;}
   .nav-item button.active{border-bottom-color:var(--accent);border-left:none;}
 }
+
+/* login gate */
+.gate{position:fixed;inset:0;z-index:1000;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:24px;}
+.gate.hidden{display:none;}
+.gate-card{width:100%;max-width:380px;background:white;border:1px solid var(--border);border-radius:2px;padding:36px 32px;box-shadow:0 4px 14px var(--shadow);position:relative;overflow:hidden;}
+.gate-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);}
+.gate-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.gate-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--ink);line-height:1.2;margin-bottom:8px;}
+.gate-title em{font-style:italic;color:var(--accent);}
+.gate-sub{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:22px;}
+.gate-field{margin-bottom:14px;}
+.gate-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
+.gate-input{width:100%;padding:10px 12px;font-family:'Instrument Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--border);border-radius:2px;transition:border-color .15s;}
+.gate-input:focus{outline:none;border-color:var(--accent);}
+.gate-btn{width:100%;margin-top:6px;padding:11px 20px;background:var(--accent);border:1px solid var(--accent);color:white;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
+.gate-btn:hover{background:#6d2c20;border-color:#6d2c20;}
+.gate-error{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.05em;color:var(--wrong);margin-top:10px;min-height:14px;}
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<!-- LOGIN GATE -->
+<div class="gate" id="loginGate">
+  <div class="gate-card">
+    <div class="gate-eyebrow">Restricted Access</div>
+    <h2 class="gate-title">Clinical Vignette <em>Training</em></h2>
+    <p class="gate-sub">This training module is for authorised residents. Please enter your credentials to continue.</p>
+    <form id="loginForm" autocomplete="off">
+      <div class="gate-field">
+        <label class="gate-label" for="loginUser">Username</label>
+        <input class="gate-input" type="text" id="loginUser" autocomplete="off" spellcheck="false" autocapitalize="off">
+      </div>
+      <div class="gate-field">
+        <label class="gate-label" for="loginPass">Password</label>
+        <input class="gate-input" type="password" id="loginPass" autocomplete="off">
+      </div>
+      <button class="gate-btn" type="submit">Enter</button>
+      <div class="gate-error" id="loginErr"></div>
+    </form>
+  </div>
+</div>
+
+<div class="wrap" id="appWrap" style="display:none;">
 
 <header>
   <div class="eyebrow">Psychodynamic Psychotherapy · 16-Session Training Module · PGY-3</div>
@@ -148,6 +187,39 @@ h2{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3.5vw,30px);font-
 </div><!-- /wrap -->
 
 <script>
+// ─── LOGIN GATE ─────────────────────────────────────────────────────────────
+// Note: client-side gate only — not real security. Soft barrier for casual access.
+(function(){
+  const VALID_USER = 'Freud';
+  const VALID_PASS = 'Clinical Vignette Training';
+  const gate = document.getElementById('loginGate');
+  const wrap = document.getElementById('appWrap');
+  const form = document.getElementById('loginForm');
+  const userIn = document.getElementById('loginUser');
+  const passIn = document.getElementById('loginPass');
+  const errEl = document.getElementById('loginErr');
+  let appBuilt = false;
+
+  userIn.focus();
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const u = userIn.value;
+    const p = passIn.value;
+    if (u === VALID_USER && p === VALID_PASS) {
+      gate.classList.add('hidden');
+      wrap.style.display = '';
+      if (!appBuilt) { build(); appBuilt = true; }
+    } else {
+      errEl.textContent = 'Incorrect username or password.';
+      passIn.value = '';
+      passIn.focus();
+    }
+  });
+
+  [userIn, passIn].forEach(el => el.addEventListener('input', () => { errEl.textContent = ''; }));
+})();
+
 // ─── DATA ───────────────────────────────────────────────────────────────────
 const SESSIONS = [
 {
@@ -1150,7 +1222,7 @@ function updateProgress() {
   document.getElementById('gLabel').textContent = answered + ' of ' + TOTAL + ' questions answered';
 }
 
-build();
+// build() is called by the login gate after successful authentication.
 </script>
 </body>
 </html>
