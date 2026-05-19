@@ -92,16 +92,13 @@ h2{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3.5vw,30px);font-
 .feedback.partial{background:var(--partial-bg);border-color:var(--gold);color:var(--partial);display:block;}
 .fb-icon{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px;opacity:.7;}
 .fb-text{font-family:'Cormorant Garamond',serif;font-size:15.5px;line-height:1.65;}
+.fb-caveat{font-family:'Instrument Sans',sans-serif;font-size:10.5px;line-height:1.55;font-style:italic;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px dotted currentColor;opacity:.75;}
 
 .divider{border:none;border-top:1px solid var(--border);margin:28px 0;}
 
-.score-box{display:none;background:white;border:1px solid var(--border);padding:24px 28px;border-radius:2px;margin-top:28px;box-shadow:0 2px 6px var(--shadow);}
-.score-box.visible{display:block;animation:slideDown .4s ease;}
-.score-big{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--accent);line-height:1;}
-.score-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
-.score-msg{font-family:'Cormorant Garamond',serif;font-size:16px;line-height:1.65;color:var(--ink);border-top:1px solid var(--border);padding-top:14px;}
 .reset-btn{margin-top:16px;padding:8px 20px;background:none;border:1px solid var(--accent);color:var(--accent);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
 .reset-btn:hover{background:var(--accent);color:white;}
+.session-actions{margin-top:20px;padding-top:20px;border-top:1px solid var(--border);}
 
 .reflection{background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:24px 28px;margin-top:28px;}
 .ref-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
@@ -1055,10 +1052,7 @@ function build() {
         <p class="vignette-text">${s.vignette}</p>
       </div>
       ${qHtml}
-      <div class="score-box" id="score-${s.id}">
-        <div class="score-big" id="score-num-${s.id}">—</div>
-        <div class="score-sub">${s.num} Score</div>
-        <div class="score-msg" id="score-msg-${s.id}"></div>
+      <div class="session-actions">
         <button class="reset-btn" onclick="resetSession('${s.id}')">Restart this session</button>
       </div>
       <div class="reflection">
@@ -1116,7 +1110,8 @@ function answer(sid, qn, letter, verdict) {
   const fbEl = document.getElementById('fb-' + sid + '-q' + qn);
   const cls = verdict === 'correct' ? 'correct' : verdict === 'partial' ? 'partial' : 'wrong';
   fbEl.className = 'feedback ' + cls;
-  fbEl.innerHTML = `<div class="fb-icon">${fbData.label}</div><div class="fb-text">${fbData.text}</div>`;
+  const caveat = 'These designations are illustrative only. The "best" response reflects one defensible clinical choice; depending on the patient, the moment, and the broader treatment context, any of the alternatives may be appropriate — and the rationale matters more than the label.';
+  fbEl.innerHTML = `<div class="fb-icon">${fbData.label}</div><div class="fb-text">${fbData.text}</div><div class="fb-caveat">${caveat}</div>`;
 
   updateProgress();
   checkComplete(sid);
@@ -1126,21 +1121,6 @@ function checkComplete(sid) {
   const sess = SESSIONS.find(s => s.id === sid);
   const keys = sess.questions.map(q => sid + '_q' + q.qn);
   if (!keys.every(k => state[k] !== null)) return;
-
-  const correct = keys.filter(k => state[k] === 'correct').length;
-  const partial = keys.filter(k => state[k] === 'partial').length;
-  const total = keys.length;
-  const score = Math.round(((correct + partial * 0.5) / total) * 100);
-
-  document.getElementById('score-num-' + sid).textContent = score + '%';
-  let msg;
-  if (score === 100) msg = 'Excellent throughout — the frame was held, the material was followed, and the patient was kept at the centre. Review the debrief questions to deepen the learning.';
-  else if (score >= 67) msg = 'Strong clinical instincts on display. The questions where you chose the partial or wrong response often contain the most to learn — return to the rationale carefully.';
-  else if (score >= 34) msg = 'Some strong moments alongside areas to develop. The feedback explains what the better responses are doing differently — read it slowly.';
-  else msg = 'This material takes time and repetition. Reading the feedback for each question carefully — especially the wrong choices — will clarify the clinical logic.';
-
-  document.getElementById('score-msg-' + sid).textContent = msg;
-  document.getElementById('score-' + sid).classList.add('visible');
 
   // Mark nav complete
   document.getElementById('nbtn-' + sid).classList.add('completed');
@@ -1159,7 +1139,6 @@ function resetSession(sid) {
     el.className = 'feedback';
     el.innerHTML = '';
   });
-  document.getElementById('score-' + sid).classList.remove('visible');
   document.getElementById('nbtn-' + sid).classList.remove('completed');
   updateProgress();
 }
